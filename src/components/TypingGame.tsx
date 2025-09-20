@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useGameStats } from '../hooks/useGameStats';
+import FloatingTextComponent from './FloatingText';
+import type { FloatingText } from '../types/game';
 
 interface TypingGameProps {
   targetText: string;
-  onGameComplete: (wpm: number, accuracy: number) => void;
+  onGameComplete: (wpm: number, accuracy: number, correctWords: number, timeElapsed: number) => void;
   onMistake?: (char: string) => void;
 }
 
@@ -23,7 +25,33 @@ const TypingGame: React.FC<TypingGameProps> = ({
   } = useGameStats();
   
   const [hasStarted, setHasStarted] = useState(false);
+  const [floatingTexts, setFloatingTexts] = useState<FloatingText[]>([]);
+  const [lastWpm, setLastWpm] = useState(0);
+  const [combo, setCombo] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
+
+  // Add floating text animation
+  const addFloatingText = (text: string, type: FloatingText['type']) => {
+    const id = Date.now().toString() + Math.random().toString(36).substr(2, 9);
+    const rect = inputRef.current?.getBoundingClientRect();
+    const x = (rect?.left || 0) + Math.random() * (rect?.width || 300);
+    const y = (rect?.top || 0) - 50;
+    
+    const newFloatingText: FloatingText = {
+      id,
+      text,
+      type,
+      x,
+      y,
+      color: type === 'perfect' ? '#facc15' : type === 'wpm' ? '#3b82f6' : '#10b981'
+    };
+    
+    setFloatingTexts(prev => [...prev, newFloatingText]);
+  };
+
+  const removeFloatingText = (id: string) => {
+    setFloatingTexts(prev => prev.filter(text => text.id !== id));
+  };
 
   useEffect(() => {
     if (targetText && !hasStarted) {
@@ -34,9 +62,45 @@ const TypingGame: React.FC<TypingGameProps> = ({
 
   useEffect(() => {
     if (currentInput === targetText && isGameActive) {
-      onGameComplete(stats.wpm, stats.accuracy);
+      // Game completed
+      const perfectScore = stats.accuracy === 100;
+      if (perfectScore) {
+        addFloatingText('Perfect!', 'perfect');
+      }
+      
+      onGameComplete(stats.wpm, stats.accuracy, stats.correctWords, stats.timeElapsed);
     }
-  }, [currentInput, targetText, isGameActive, stats.wpm, stats.accuracy, onGameComplete]);
+  }, [currentInput, targetText, isGameActive, stats, onGameComplete]);
+
+  // Track WPM improvements for animations
+  useEffect(() => {
+    if (stats.wpm > lastWpm && stats.wpm > 0 && isGameActive) {
+      if (stats.wpm >= lastWpm + 10) {
+        addFloatingText(`+${Math.round(stats.wpm - lastWpm)} WPM`, 'wpm');
+      }
+      setLastWpm(stats.wpm);
+    }
+  }, [stats.wpm, lastWpm, isGameActive]);
+
+  // Track accuracy and combo
+  useEffect(() => {
+    if (isGameActive && currentInput.length > 0) {
+      const lastChar = currentInput[currentInput.length - 1];
+      const expectedChar = targetText[currentInput.length - 1];
+      
+      if (lastChar === expectedChar) {
+        setCombo(prev => {
+          const newCombo = prev + 1;
+          if (newCombo > 0 && newCombo % 10 === 0) {
+            addFloatingText(`${newCombo} Combo!`, 'combo');
+          }
+          return newCombo;
+        });
+      } else {
+        setCombo(0);
+      }
+    }
+  }, [currentInput, targetText, isGameActive]);
 
   useEffect(() => {
     if (mistakes.length > 0 && onMistake) {
@@ -107,6 +171,12 @@ const TypingGame: React.FC<TypingGameProps> = ({
                   {stats.accuracy}%
                 </div>
                 <div className="text-sm text-gray-400 font-medium tracking-wider">ACCURACY</div>
+                {/* Combo indicator */}
+                {combo > 5 && (
+                  <div className="absolute -top-2 -right-2 bg-gradient-to-r from-orange-500 to-red-500 text-white text-xs font-bold px-2 py-1 rounded-full animate-combo-pulse">
+                    🔥{combo}
+                  </div>
+                )}
               </div>
             </div>
             
@@ -184,6 +254,12 @@ const TypingGame: React.FC<TypingGameProps> = ({
           )}
         </div>
       </div>
+      
+      {/* Floating Text Animations */}
+      <FloatingTextComponent 
+        floatingTexts={floatingTexts}
+        onAnimationComplete={removeFloatingText}
+      />
     </div>
   );
 };

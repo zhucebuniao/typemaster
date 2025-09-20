@@ -3,7 +3,8 @@ import TypingGame from './components/TypingGame';
 import GameModeSelector, { type GameMode } from './components/GameModeSelector';
 import StatsDisplay from './components/StatsDisplay';
 import type { UserProgress } from './types/game';
-import { loadUserProgress, saveUserProgress, addMistakeWord, addToLeaderboard } from './utils/storage';
+import LevelProgressBar from './components/LevelProgressBar';
+import { loadUserProgress, addMistakeWord, addToLeaderboard, updateUserProgressWithGameResults } from './utils/storage';
 import { getWordsByDifficulty, getSentencesByDifficulty } from './data/words';
 
 type AppState = 'menu' | 'game' | 'stats';
@@ -21,7 +22,12 @@ function App() {
   }, []);
 
   const getRandomContent = (mode: GameMode): string => {
-    if (mode.id.startsWith('words-')) {
+    if (mode.type === 'wordpack' && mode.wordPack) {
+      // Use word from the specific word pack
+      const words = mode.wordPack.words;
+      const randomWord = words[Math.floor(Math.random() * words.length)];
+      return randomWord.word;
+    } else if (mode.id.startsWith('words-')) {
       const words = getWordsByDifficulty(mode.difficulty);
       const randomWord = words[Math.floor(Math.random() * words.length)];
       return randomWord.word;
@@ -39,21 +45,16 @@ function App() {
     setAppState('game');
   };
 
-  const handleGameComplete = (wpm: number, accuracy: number) => {
-    // Calculate score based on WPM and accuracy
-    const score = Math.round(wpm * (accuracy / 100) * 10);
+  const handleGameComplete = (wpm: number, accuracy: number, correctWords: number, timeElapsed: number) => {
+    // Use new level progression system
+    const { leveledUp, newLevel } = updateUserProgressWithGameResults(wpm, accuracy, correctWords, timeElapsed);
     
-    // Update user progress
-    const newProgress: UserProgress = {
-      ...userProgress,
-      bestWpm: Math.max(userProgress.bestWpm, wpm),
-      bestAccuracy: Math.max(userProgress.bestAccuracy, accuracy),
-      totalScore: userProgress.totalScore + score,
-      level: Math.floor((userProgress.totalScore + score) / 1000) + 1,
-    };
+    // Calculate score for leaderboard
+    const score = Math.round(wpm * (accuracy / 100) * correctWords);
     
-    setUserProgress(newProgress);
-    saveUserProgress(newProgress);
+    // Refresh user progress from storage
+    const updatedProgress = loadUserProgress();
+    setUserProgress(updatedProgress);
 
     // Add to leaderboard
     addToLeaderboard({
@@ -63,11 +64,17 @@ function App() {
       score,
     });
 
-    // Show completion message
+    // Show completion message with level up notification
     setTimeout(() => {
-      const playAgain = window.confirm(
-        `Great job! You achieved ${wpm} WPM with ${accuracy}% accuracy and scored ${score} points!\n\nWould you like to play again?`
-      );
+      let message = `Great job! You achieved ${wpm} WPM with ${accuracy}% accuracy and scored ${score} points!`;
+      
+      if (leveledUp) {
+        message += `\n🎉 LEVEL UP! You are now Level ${newLevel}!`;
+      }
+      
+      message += '\n\nWould you like to play again?';
+      
+      const playAgain = window.confirm(message);
       
       if (playAgain) {
         const text = getRandomContent(currentMode!);
@@ -106,7 +113,7 @@ function App() {
             </h1>
             <div className="flex items-center">
               <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full shadow-lg">
-                v1.0 MVP
+                v1.1
               </span>
             </div>
           </div>
@@ -134,16 +141,8 @@ function App() {
             </button>
             
             <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-gray-600">
-              <div className="flex items-center space-x-3 bg-gradient-to-r from-slate-800/50 to-slate-700/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-slate-600/50">
-                <div className="flex items-center space-x-2">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                  <span className="text-sm font-semibold text-green-400">Level {userProgress.level}</span>
-                </div>
-                <span className="text-gray-500">•</span>
-                <div className="flex items-center space-x-1">
-                  <span className="text-sm font-semibold text-yellow-400">{userProgress.totalScore}</span>
-                  <span className="text-xs text-gray-400">pts</span>
-                </div>
+              <div className="min-w-[200px]">
+                <LevelProgressBar userProgress={userProgress} />
               </div>
             </div>
           </nav>
@@ -155,7 +154,7 @@ function App() {
   const renderContent = () => {
     switch (appState) {
       case 'menu':
-        return <GameModeSelector onModeSelect={handleModeSelect} />;
+        return <GameModeSelector onModeSelect={handleModeSelect} userProgress={userProgress} />;
       case 'game':
         return currentText ? (
           <TypingGame
@@ -181,7 +180,7 @@ function App() {
           />
         );
       default:
-        return <GameModeSelector onModeSelect={handleModeSelect} />;
+        return <GameModeSelector onModeSelect={handleModeSelect} userProgress={userProgress} />;
     }
   };
 
