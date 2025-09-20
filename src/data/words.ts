@@ -37,6 +37,34 @@ export const hardWords: Word[] = [
   { word: "extraordinary", meaning: "非凡的", difficulty: "hard" },
   { word: "revolutionary", meaning: "革命性的", difficulty: "hard" },
   { word: "incomprehensible", meaning: "难以理解的", difficulty: "hard" },
+  { word: "psychological", meaning: "心理的", difficulty: "hard" },
+  { word: "philosophical", meaning: "哲学的", difficulty: "hard" },
+  { word: "chronological", meaning: "按时间顺序的", difficulty: "hard" },
+  { word: "characteristic", meaning: "特征的", difficulty: "hard" },
+  { word: "responsibility", meaning: "责任", difficulty: "hard" },
+  { word: "approximately", meaning: "大约", difficulty: "hard" },
+  { word: "unfortunately", meaning: "不幸地", difficulty: "hard" },
+  { word: "consequently", meaning: "因此", difficulty: "hard" },
+  { word: "significantly", meaning: "显著地", difficulty: "hard" },
+  { word: "independently", meaning: "独立地", difficulty: "hard" },
+];
+
+export const codingWords: Word[] = [
+  { word: "function", meaning: "函数", difficulty: "medium" },
+  { word: "variable", meaning: "变量", difficulty: "medium" },
+  { word: "algorithm", meaning: "算法", difficulty: "medium" },
+  { word: "interface", meaning: "接口", difficulty: "medium" },
+  { word: "component", meaning: "组件", difficulty: "medium" },
+  { word: "typescript", meaning: "TypeScript", difficulty: "medium" },
+  { word: "javascript", meaning: "JavaScript", difficulty: "medium" },
+  { word: "asynchronous", meaning: "异步的", difficulty: "hard" },
+  { word: "polymorphism", meaning: "多态性", difficulty: "hard" },
+  { word: "encapsulation", meaning: "封装", difficulty: "hard" },
+  { word: "inheritance", meaning: "继承", difficulty: "hard" },
+  { word: "abstraction", meaning: "抽象", difficulty: "hard" },
+  { word: "recursion", meaning: "递归", difficulty: "hard" },
+  { word: "optimization", meaning: "优化", difficulty: "hard" },
+  { word: "refactoring", meaning: "重构", difficulty: "hard" },
 ];
 
 export const easySentences: Sentence[] = [
@@ -56,14 +84,27 @@ export const mediumSentences: Sentence[] = [
 export const hardSentences: Sentence[] = [
   { sentence: "The entrepreneurial ecosystem requires sophisticated understanding of market dynamics.", difficulty: "hard" },
   { sentence: "Revolutionary technological advancements often create incomprehensible paradigm shifts.", difficulty: "hard" },
+  { sentence: "Psychological research demonstrates the extraordinary complexity of human consciousness.", difficulty: "hard" },
+  { sentence: "Philosophical debates about responsibility in artificial intelligence are becoming increasingly significant.", difficulty: "hard" },
+  { sentence: "Unfortunately, the chronological analysis revealed approximately inconsistent data patterns.", difficulty: "hard" },
+];
+
+export const codingSentences: Sentence[] = [
+  { sentence: "The function returns a promise that resolves asynchronously.", difficulty: "medium" },
+  { sentence: "TypeScript provides static type checking for JavaScript applications.", difficulty: "medium" },
+  { sentence: "Component-based architecture improves code reusability and maintainability.", difficulty: "medium" },
+  { sentence: "Polymorphism allows objects of different types to be treated uniformly through inheritance.", difficulty: "hard" },
+  { sentence: "Encapsulation and abstraction are fundamental principles of object-oriented programming.", difficulty: "hard" },
+  { sentence: "Algorithm optimization through recursion requires careful consideration of time complexity.", difficulty: "hard" },
+  { sentence: "Refactoring legacy code involves systematic restructuring without changing external behavior.", difficulty: "hard" },
 ];
 
 export const getAllWords = (): Word[] => {
-  return [...easyWords, ...mediumWords, ...hardWords];
+  return [...easyWords, ...mediumWords, ...hardWords, ...codingWords];
 };
 
 export const getAllSentences = (): Sentence[] => {
-  return [...easySentences, ...mediumSentences, ...hardSentences];
+  return [...easySentences, ...mediumSentences, ...hardSentences, ...codingSentences];
 };
 
 export const getWordsByDifficulty = (difficulty: 'easy' | 'medium' | 'hard'): Word[] => {
@@ -79,6 +120,10 @@ export const getWordsByDifficulty = (difficulty: 'easy' | 'medium' | 'hard'): Wo
   }
 };
 
+export const getCodingWords = (): Word[] => {
+  return codingWords;
+};
+
 export const getSentencesByDifficulty = (difficulty: 'easy' | 'medium' | 'hard'): Sentence[] => {
   switch (difficulty) {
     case 'easy':
@@ -90,4 +135,8 @@ export const getSentencesByDifficulty = (difficulty: 'easy' | 'medium' | 'hard')
     default:
       return easySentences;
   }
+};
+
+export const getCodingSentences = (): Sentence[] => {
+  return codingSentences;
 };

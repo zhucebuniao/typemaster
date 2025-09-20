@@ -24,6 +24,9 @@ export const loadUserProgress = (): UserProgress => {
     bestAccuracy: 0,
     mistakeWords: [],
     achievementCount: 0,
+    experience: 0,
+    currentLevelProgress: 0,
+    unlockedModes: ['words-easy'],
   };
 };
 

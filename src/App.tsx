@@ -4,7 +4,8 @@ import GameModeSelector, { type GameMode } from './components/GameModeSelector';
 import StatsDisplay from './components/StatsDisplay';
 import type { UserProgress } from './types/game';
 import { loadUserProgress, saveUserProgress, addMistakeWord, addToLeaderboard } from './utils/storage';
-import { getWordsByDifficulty, getSentencesByDifficulty } from './data/words';
+import { getWordsByDifficulty, getSentencesByDifficulty, getCodingWords, getCodingSentences } from './data/words';
+import { getExperienceForScore, getLevelInfo } from './data/levels';
 
 type AppState = 'menu' | 'game' | 'stats';
 
@@ -21,7 +22,19 @@ function App() {
   }, []);
 
   const getRandomContent = (mode: GameMode): string => {
-    if (mode.id.startsWith('words-')) {
+    if (mode.id === 'coding') {
+      // Randomly choose between coding words and sentences
+      const useWords = Math.random() > 0.5;
+      if (useWords) {
+        const words = getCodingWords();
+        const randomWord = words[Math.floor(Math.random() * words.length)];
+        return randomWord.word;
+      } else {
+        const sentences = getCodingSentences();
+        const randomSentence = sentences[Math.floor(Math.random() * sentences.length)];
+        return randomSentence.sentence;
+      }
+    } else if (mode.id.startsWith('words-')) {
       const words = getWordsByDifficulty(mode.difficulty);
       const randomWord = words[Math.floor(Math.random() * words.length)];
       return randomWord.word;
@@ -40,6 +53,12 @@ function App() {
   };
 
   const handleGameComplete = (wpm: number, accuracy: number) => {
+    // Calculate experience gain
+    const experienceGain = getExperienceForScore(wpm, accuracy);
+    const newExperience = userProgress.experience + experienceGain;
+    const oldLevel = getLevelInfo(userProgress.experience);
+    const newLevel = getLevelInfo(newExperience);
+    
     // Calculate score based on WPM and accuracy
     const score = Math.round(wpm * (accuracy / 100) * 10);
     
@@ -49,15 +68,24 @@ function App() {
       bestWpm: Math.max(userProgress.bestWpm, wpm),
       bestAccuracy: Math.max(userProgress.bestAccuracy, accuracy),
       totalScore: userProgress.totalScore + score,
-      level: Math.floor((userProgress.totalScore + score) / 1000) + 1,
+      experience: newExperience,
+      level: newLevel.level,
+      currentLevelProgress: 0, // Will be calculated in storage
+      unlockedModes: newLevel.unlockedModes,
     };
+    
+    // Check for level up
+    if (newLevel.level > oldLevel.level) {
+      // Show level up notification (could add this to UI later)
+      console.log(`Level Up! Welcome to ${newLevel.name}`);
+    }
     
     setUserProgress(newProgress);
     saveUserProgress(newProgress);
 
     // Add to leaderboard
     addToLeaderboard({
-      name: 'Player', // In a real app, this would be user input
+      name: `Player Level ${newLevel.level}`,
       wpm,
       accuracy,
       score,
@@ -106,7 +134,7 @@ function App() {
             </h1>
             <div className="flex items-center">
               <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full shadow-lg">
-                v1.0 MVP
+                v1.1 Gaming
               </span>
             </div>
           </div>
@@ -155,7 +183,7 @@ function App() {
   const renderContent = () => {
     switch (appState) {
       case 'menu':
-        return <GameModeSelector onModeSelect={handleModeSelect} />;
+        return <GameModeSelector onModeSelect={handleModeSelect} userProgress={userProgress} />;
       case 'game':
         return currentText ? (
           <TypingGame
@@ -181,7 +209,7 @@ function App() {
           />
         );
       default:
-        return <GameModeSelector onModeSelect={handleModeSelect} />;
+        return <GameModeSelector onModeSelect={handleModeSelect} userProgress={userProgress} />;
     }
   };
 
