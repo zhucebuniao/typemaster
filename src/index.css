@@ -10,3 +10,14 @@ body {
   background-color: #0F172A;
   color: #F8FAFC;
 }
+
+/* Custom animations */
+@layer utilities {
+  .animation-delay-75 {
+    animation-delay: 75ms;
+  }
+  
+  .animation-delay-150 {
+    animation-delay: 150ms;
+  }
+}

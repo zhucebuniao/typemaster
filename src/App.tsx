@@ -94,35 +94,57 @@ function App() {
   };
 
   const renderHeader = () => (
-    <header className="w-full bg-game-surface shadow-lg">
-      <div className="max-w-6xl mx-auto px-6 py-4">
+    <header className="w-full bg-gradient-to-r from-game-surface via-game-surface to-slate-800 shadow-2xl border-b border-slate-700/50 backdrop-blur-sm">
+      <div className="max-w-6xl mx-auto px-6 py-5">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-4">
-            <h1 className="text-2xl font-bold text-white">
-              <span className="text-blue-400">Type</span>master
+          <div className="flex items-center space-x-6">
+            <h1 className="text-3xl font-bold">
+              <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500 bg-clip-text text-transparent">
+                Type
+              </span>
+              <span className="text-white">master</span>
             </h1>
-            <span className="text-sm text-gray-400">v1.0 MVP</span>
+            <div className="flex items-center">
+              <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full shadow-lg">
+                v1.0 MVP
+              </span>
+            </div>
           </div>
           
-          <nav className="flex items-center space-x-4">
+          <nav className="flex items-center space-x-2">
             {appState !== 'menu' && (
               <button
                 onClick={() => setAppState('menu')}
-                className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
+                className="flex items-center space-x-2 px-4 py-2.5 text-gray-300 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300 hover:shadow-lg backdrop-blur-sm border border-transparent hover:border-white/20"
               >
-                🏠 Home
+                <span className="text-lg">🏠</span>
+                <span className="font-medium">Home</span>
               </button>
             )}
             <button
               onClick={() => setAppState('stats')}
-              className="px-4 py-2 text-gray-300 hover:text-white transition-colors"
+              className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl transition-all duration-300 hover:shadow-lg backdrop-blur-sm border font-medium ${
+                appState === 'stats' 
+                  ? 'bg-blue-500/20 text-blue-300 border-blue-500/30 shadow-blue-500/25 shadow-lg' 
+                  : 'text-gray-300 hover:text-white hover:bg-white/10 border-transparent hover:border-white/20'
+              }`}
             >
-              📊 Stats
+              <span className="text-lg">📊</span>
+              <span>Stats</span>
             </button>
-            <div className="flex items-center space-x-2 text-sm text-gray-400">
-              <span>Level {userProgress.level}</span>
-              <span>•</span>
-              <span>{userProgress.totalScore} pts</span>
+            
+            <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-gray-600">
+              <div className="flex items-center space-x-3 bg-gradient-to-r from-slate-800/50 to-slate-700/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-slate-600/50">
+                <div className="flex items-center space-x-2">
+                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                  <span className="text-sm font-semibold text-green-400">Level {userProgress.level}</span>
+                </div>
+                <span className="text-gray-500">•</span>
+                <div className="flex items-center space-x-1">
+                  <span className="text-sm font-semibold text-yellow-400">{userProgress.totalScore}</span>
+                  <span className="text-xs text-gray-400">pts</span>
+                </div>
+              </div>
             </div>
           </nav>
         </div>
@@ -142,7 +164,14 @@ function App() {
             onMistake={handleMistake}
           />
         ) : (
-          <div className="text-center text-white">Loading...</div>
+          <div className="flex flex-col items-center justify-center py-16">
+            <div className="relative">
+              <div className="w-16 h-16 border-4 border-blue-500/30 border-t-blue-500 rounded-full animate-spin"></div>
+              <div className="absolute inset-0 w-16 h-16 border-4 border-transparent border-t-purple-500 rounded-full animate-spin animation-delay-75"></div>
+            </div>
+            <p className="mt-6 text-xl text-gray-300 font-medium">Loading your challenge...</p>
+            <p className="mt-2 text-sm text-gray-500">Preparing the perfect typing experience</p>
+          </div>
         );
       case 'stats':
         return (
@@ -157,21 +186,65 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-game-bg text-white">
-      {renderHeader()}
-      <main className="py-8">
-        {renderContent()}
-      </main>
+    <div className="min-h-screen bg-gradient-to-br from-game-bg via-slate-900 to-game-bg text-white relative overflow-x-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl"></div>
+      </div>
       
-      {/* Footer */}
-      <footer className="mt-16 py-8 border-t border-gray-700">
-        <div className="max-w-6xl mx-auto px-6 text-center text-gray-400">
-          <p>© 2024 Typemaster - 2D Typing & English Learning Game</p>
-          <p className="text-sm mt-2">
-            Built with React, TypeScript, and Tailwind CSS • Deployed on Vercel
-          </p>
-        </div>
-      </footer>
+      <div className="relative z-10">
+        {renderHeader()}
+        <main className="py-12">
+          {renderContent()}
+        </main>
+        
+        {/* Enhanced Footer */}
+        <footer className="mt-20 relative">
+          <div className="absolute inset-0 bg-gradient-to-r from-slate-800/50 via-game-surface/50 to-slate-800/50 backdrop-blur-sm"></div>
+          <div className="relative border-t border-gradient-to-r from-transparent via-gray-600 to-transparent">
+            <div className="max-w-6xl mx-auto px-6 py-12 text-center">
+              <div className="mb-6">
+                <h3 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                  Typemaster
+                </h3>
+                <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                  Master your typing skills and enhance your vocabulary with our modern, interactive typing game.
+                </p>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-8 text-sm text-gray-500 mb-6">
+                <span className="flex items-center space-x-2">
+                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                  <span>© 2024 Typemaster</span>
+                </span>
+                <span className="hidden sm:block">•</span>
+                <span>2D Typing & English Learning Game</span>
+              </div>
+              
+              <div className="flex flex-wrap justify-center items-center space-x-6 text-xs text-gray-600">
+                <span className="flex items-center space-x-1">
+                  <span>⚛️</span>
+                  <span>React</span>
+                </span>
+                <span className="flex items-center space-x-1">
+                  <span>🎨</span>
+                  <span>Tailwind CSS</span>
+                </span>
+                <span className="flex items-center space-x-1">
+                  <span>📘</span>
+                  <span>TypeScript</span>
+                </span>
+                <span className="flex items-center space-x-1">
+                  <span>▲</span>
+                  <span>Vercel</span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
     </div>
   );
 }
