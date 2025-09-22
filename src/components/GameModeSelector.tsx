@@ -84,41 +84,44 @@ const GameModeSelector: React.FC<GameModeSelectorProps> = ({ onModeSelect, userP
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'easy':
-        return 'border-green-400 hover:border-green-300';
+        return 'border-apple-success/60 hover:border-apple-success/80';
       case 'medium':
-        return 'border-yellow-400 hover:border-yellow-300';
+        return 'border-apple-warning/60 hover:border-apple-warning/80';
       case 'hard':
-        return 'border-red-400 hover:border-red-300';
+        return 'border-apple-error/60 hover:border-apple-error/80';
       default:
-        return 'border-gray-400 hover:border-gray-300';
+        return 'border-apple-separator hover:border-apple-text-secondary';
     }
   };
 
   const getDifficultyBg = (difficulty: string) => {
     switch (difficulty) {
       case 'easy':
-        return 'bg-green-900/30';
+        return 'bg-apple-success/10 hover:bg-apple-success/15';
       case 'medium':
-        return 'bg-yellow-900/30';
+        return 'bg-apple-warning/10 hover:bg-apple-warning/15';
       case 'hard':
-        return 'bg-red-900/30';
+        return 'bg-apple-error/10 hover:bg-apple-error/15';
       default:
-        return 'bg-gray-900/30';
+        return 'bg-apple-card-light/50';
     }
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto p-6">
-      <div className="text-center mb-12">
-        <h2 className="text-4xl font-bold bg-gradient-to-r from-blue-400 via-purple-500 to-cyan-400 bg-clip-text text-transparent mb-4">
+    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
+      <div className="text-center mb-8 sm:mb-12">
+        <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-apple-primary via-apple-secondary to-blue-400 bg-clip-text text-transparent mb-3 sm:mb-4">
           Choose Your Challenge
         </h2>
-        <p className="text-lg text-gray-300 max-w-2xl mx-auto leading-relaxed">
-          Level {currentLevel.level} - {currentLevel.name} | Select a game mode to start improving your typing skills
+        <p className="text-sm sm:text-base md:text-lg text-apple-text-secondary max-w-2xl mx-auto leading-relaxed px-2">
+          Level {currentLevel.level} - {currentLevel.name}
+        </p>
+        <p className="text-xs sm:text-sm text-apple-text-secondary/80 mt-2 px-2">
+          Select a game mode to start improving your typing skills
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-6">
         {gameModes.map((mode) => {
           const isLocked = isModeLocked(mode);
           return (
@@ -126,18 +129,18 @@ const GameModeSelector: React.FC<GameModeSelectorProps> = ({ onModeSelect, userP
               key={mode.id}
               onClick={() => !isLocked && onModeSelect(mode)}
               disabled={isLocked}
-              className={`relative p-8 rounded-2xl border-2 transition-all duration-300 group backdrop-blur-sm overflow-hidden ${
+              className={`relative p-6 sm:p-8 rounded-apple-xl transition-all duration-300 group overflow-hidden glass-card border ${
                 isLocked 
-                  ? 'opacity-50 cursor-not-allowed border-gray-600 bg-gray-900/30' 
-                  : `hover:scale-[1.02] hover:shadow-2xl ${getDifficultyColor(mode.difficulty)} ${getDifficultyBg(mode.difficulty)}`
+                  ? 'opacity-60 cursor-not-allowed border-apple-separator bg-apple-card' 
+                  : `hover:scale-[1.02] active:scale-[0.98] hover:shadow-apple-lg ${getDifficultyColor(mode.difficulty)} ${getDifficultyBg(mode.difficulty)}`
               }`}
             >
               {/* Lock overlay */}
               {isLocked && (
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center z-20 rounded-2xl">
+                <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-20 rounded-apple-xl backdrop-blur-sm">
                   <div className="text-center">
-                    <div className="text-4xl mb-2">🔒</div>
-                    <div className="text-sm font-semibold text-gray-300">
+                    <div className="text-3xl sm:text-4xl mb-2">🔒</div>
+                    <div className="text-xs sm:text-sm font-semibold text-apple-text-secondary">
                       Requires Level {mode.requiredLevel}
                     </div>
                   </div>
@@ -149,34 +152,34 @@ const GameModeSelector: React.FC<GameModeSelectorProps> = ({ onModeSelect, userP
               
               {/* Icon with glow effect */}
               <div className="relative z-10">
-                <div className={`text-5xl mb-4 transform transition-transform duration-300 filter drop-shadow-lg ${
+                <div className={`text-4xl sm:text-5xl mb-3 sm:mb-4 transform transition-transform duration-300 filter drop-shadow-lg ${
                   !isLocked ? 'group-hover:scale-110' : ''
                 }`}>
                   {mode.icon}
                 </div>
                 
-                <h3 className={`text-xl font-bold mb-3 transition-colors duration-300 ${
-                  isLocked ? 'text-gray-500' : 'text-white group-hover:text-gray-100'
+                <h3 className={`text-lg sm:text-xl font-bold mb-2 sm:mb-3 transition-colors duration-300 ${
+                  isLocked ? 'text-apple-text-secondary' : 'text-apple-text group-hover:text-gray-100'
                 }`}>
                   {mode.name}
                 </h3>
                 
-                <p className={`transition-colors duration-300 leading-relaxed mb-4 ${
-                  isLocked ? 'text-gray-600' : 'text-gray-400 group-hover:text-gray-300'
+                <p className={`transition-colors duration-300 leading-relaxed mb-3 sm:mb-4 text-sm sm:text-base ${
+                  isLocked ? 'text-apple-text-secondary/70' : 'text-apple-text-secondary group-hover:text-apple-text-secondary/90'
                 }`}>
                   {mode.description}
                 </p>
                 
                 <div className="flex justify-center">
                   <span
-                    className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-lg transition-shadow duration-300 ${
+                    className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider shadow-apple transition-shadow duration-300 ${
                       isLocked
-                        ? 'bg-gray-600 text-gray-400'
+                        ? 'bg-apple-separator text-apple-text-secondary'
                         : mode.difficulty === 'easy'
-                        ? 'bg-gradient-to-r from-green-500 to-emerald-500 text-white shadow-green-500/25 group-hover:shadow-xl'
+                        ? 'bg-gradient-to-r from-apple-success to-green-400 text-white shadow-apple-success/25 group-hover:shadow-apple-lg'
                         : mode.difficulty === 'medium'
-                        ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white shadow-yellow-500/25 group-hover:shadow-xl'
-                        : 'bg-gradient-to-r from-red-500 to-pink-500 text-white shadow-red-500/25 group-hover:shadow-xl'
+                        ? 'bg-gradient-to-r from-apple-warning to-yellow-400 text-white shadow-apple-warning/25 group-hover:shadow-apple-lg'
+                        : 'bg-gradient-to-r from-apple-error to-red-400 text-white shadow-apple-error/25 group-hover:shadow-apple-lg'
                     }`}
                   >
                     {mode.difficulty}
@@ -186,12 +189,12 @@ const GameModeSelector: React.FC<GameModeSelectorProps> = ({ onModeSelect, userP
               
               {/* Subtle border glow effect */}
               {!isLocked && (
-                <div className={`absolute inset-0 rounded-2xl transition-all duration-300 ${
+                <div className={`absolute inset-0 rounded-apple-xl transition-all duration-300 ${
                   mode.difficulty === 'easy'
-                    ? 'group-hover:shadow-[0_0_30px_rgba(34,197,94,0.3)]'
+                    ? 'group-hover:shadow-[0_0_30px_rgba(52,199,89,0.3)]'
                     : mode.difficulty === 'medium'
-                    ? 'group-hover:shadow-[0_0_30px_rgba(245,158,11,0.3)]'
-                    : 'group-hover:shadow-[0_0_30px_rgba(239,68,68,0.3)]'
+                    ? 'group-hover:shadow-[0_0_30px_rgba(255,159,10,0.3)]'
+                    : 'group-hover:shadow-[0_0_30px_rgba(255,59,48,0.3)]'
                 }`} />
               )}
             </button>

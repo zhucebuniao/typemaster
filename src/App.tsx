@@ -122,18 +122,18 @@ function App() {
   };
 
   const renderHeader = () => (
-    <header className="w-full bg-gradient-to-r from-game-surface via-game-surface to-slate-800 shadow-2xl border-b border-slate-700/50 backdrop-blur-sm">
-      <div className="max-w-6xl mx-auto px-6 py-5">
+    <header className="w-full glass-dark shadow-apple-lg border-b border-apple-separator">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-6">
-            <h1 className="text-3xl font-bold">
-              <span className="bg-gradient-to-r from-blue-400 via-cyan-400 to-purple-500 bg-clip-text text-transparent">
+          <div className="flex items-center space-x-3 sm:space-x-6">
+            <h1 className="text-2xl sm:text-3xl font-bold">
+              <span className="bg-gradient-to-r from-apple-primary via-blue-400 to-apple-secondary bg-clip-text text-transparent">
                 Type
               </span>
-              <span className="text-white">master</span>
+              <span className="text-apple-text">master</span>
             </h1>
-            <div className="flex items-center">
-              <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-full shadow-lg">
+            <div className="hidden sm:flex items-center">
+              <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-apple-secondary to-apple-primary text-white rounded-full shadow-apple">
                 v1.1 Gaming
               </span>
             </div>
@@ -143,34 +143,34 @@ function App() {
             {appState !== 'menu' && (
               <button
                 onClick={() => setAppState('menu')}
-                className="flex items-center space-x-2 px-4 py-2.5 text-gray-300 hover:text-white hover:bg-white/10 rounded-xl transition-all duration-300 hover:shadow-lg backdrop-blur-sm border border-transparent hover:border-white/20"
+                className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2.5 text-apple-text-secondary hover:text-apple-text hover:bg-white/10 rounded-apple transition-all duration-300 hover:shadow-apple backdrop-blur-sm border border-transparent hover:border-white/20"
               >
-                <span className="text-lg">🏠</span>
-                <span className="font-medium">Home</span>
+                <span className="text-base sm:text-lg">🏠</span>
+                <span className="font-medium text-sm sm:text-base hidden sm:inline">Home</span>
               </button>
             )}
             <button
               onClick={() => setAppState('stats')}
-              className={`flex items-center space-x-2 px-4 py-2.5 rounded-xl transition-all duration-300 hover:shadow-lg backdrop-blur-sm border font-medium ${
+              className={`flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2.5 rounded-apple transition-all duration-300 hover:shadow-apple backdrop-blur-sm border font-medium text-sm sm:text-base ${
                 appState === 'stats' 
-                  ? 'bg-blue-500/20 text-blue-300 border-blue-500/30 shadow-blue-500/25 shadow-lg' 
-                  : 'text-gray-300 hover:text-white hover:bg-white/10 border-transparent hover:border-white/20'
+                  ? 'bg-apple-primary/20 text-apple-primary border-apple-primary/30 shadow-apple-primary/25 shadow-lg' 
+                  : 'text-apple-text-secondary hover:text-apple-text hover:bg-white/10 border-transparent hover:border-white/20'
               }`}
             >
-              <span className="text-lg">📊</span>
-              <span>Stats</span>
+              <span className="text-base sm:text-lg">📊</span>
+              <span className="hidden sm:inline">Stats</span>
             </button>
             
-            <div className="flex items-center space-x-4 ml-4 pl-4 border-l border-gray-600">
-              <div className="flex items-center space-x-3 bg-gradient-to-r from-slate-800/50 to-slate-700/50 px-4 py-2 rounded-xl backdrop-blur-sm border border-slate-600/50">
-                <div className="flex items-center space-x-2">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
-                  <span className="text-sm font-semibold text-green-400">Level {userProgress.level}</span>
+            <div className="flex items-center space-x-2 sm:space-x-4 ml-2 sm:ml-4 pl-2 sm:pl-4 border-l border-apple-separator">
+              <div className="flex items-center space-x-2 sm:space-x-3 glass-card px-3 sm:px-4 py-2 rounded-apple shadow-apple">
+                <div className="flex items-center space-x-1 sm:space-x-2">
+                  <span className="w-2 h-2 bg-apple-success rounded-full animate-pulse"></span>
+                  <span className="text-xs sm:text-sm font-semibold text-apple-success">Level {userProgress.level}</span>
                 </div>
-                <span className="text-gray-500">•</span>
+                <span className="text-apple-text-secondary hidden sm:inline">•</span>
                 <div className="flex items-center space-x-1">
-                  <span className="text-sm font-semibold text-yellow-400">{userProgress.totalScore}</span>
-                  <span className="text-xs text-gray-400">pts</span>
+                  <span className="text-xs sm:text-sm font-semibold text-apple-warning">{userProgress.totalScore}</span>
+                  <span className="text-xs text-apple-text-secondary hidden sm:inline">pts</span>
                 </div>
               </div>
             </div>
@@ -214,44 +214,44 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-game-bg via-slate-900 to-game-bg text-white relative overflow-x-hidden">
+    <div className="min-h-screen bg-apple-bg text-apple-text relative overflow-x-hidden">
       {/* Background decorative elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-blue-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-purple-500/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-cyan-500/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-apple-primary/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-apple-secondary/5 rounded-full blur-3xl"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-apple-success/5 rounded-full blur-3xl"></div>
       </div>
       
       <div className="relative z-10">
         {renderHeader()}
-        <main className="py-12">
+        <main className="py-6 sm:py-12">
           {renderContent()}
         </main>
         
         {/* Enhanced Footer */}
-        <footer className="mt-20 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-800/50 via-game-surface/50 to-slate-800/50 backdrop-blur-sm"></div>
-          <div className="relative border-t border-gradient-to-r from-transparent via-gray-600 to-transparent">
-            <div className="max-w-6xl mx-auto px-6 py-12 text-center">
+        <footer className="mt-12 sm:mt-20 relative">
+          <div className="absolute inset-0 glass-dark"></div>
+          <div className="relative border-t border-apple-separator">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 text-center">
               <div className="mb-6">
-                <h3 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-apple-primary to-apple-secondary bg-clip-text text-transparent mb-2">
                   Typemaster
                 </h3>
-                <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                <p className="text-apple-text-secondary max-w-2xl mx-auto leading-relaxed text-sm sm:text-base px-4">
                   Master your typing skills and enhance your vocabulary with our modern, interactive typing game.
                 </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-8 text-sm text-gray-500 mb-6">
+              <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-8 text-sm text-apple-text-secondary mb-6">
                 <span className="flex items-center space-x-2">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                  <span className="w-2 h-2 bg-apple-success rounded-full animate-pulse"></span>
                   <span>© 2024 Typemaster</span>
                 </span>
                 <span className="hidden sm:block">•</span>
                 <span>2D Typing & English Learning Game</span>
               </div>
               
-              <div className="flex flex-wrap justify-center items-center space-x-6 text-xs text-gray-600">
+              <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 text-xs text-apple-text-secondary">
                 <span className="flex items-center space-x-1">
                   <span>⚛️</span>
                   <span>React</span>
