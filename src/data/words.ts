@@ -1,6 +1,7 @@
 import type { Word, Sentence } from '../types/game';
 
 export const easyWords: Word[] = [
+  { word: "i need to do it today", meaning: "我今天需要做这件事情", difficulty: "easy" },
   { word: "apple", meaning: "苹果", difficulty: "easy" },
   { word: "cat", meaning: "猫", difficulty: "easy" },
   { word: "dog", meaning: "狗", difficulty: "easy" },

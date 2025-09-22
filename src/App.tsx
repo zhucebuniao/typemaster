@@ -35,6 +35,10 @@ function App() {
         return randomSentence.sentence;
       }
     } else if (mode.id.startsWith('words-')) {
+      // For demo purposes, always show "i need to do it today" for easy words
+      if (mode.difficulty === 'easy') {
+        return "i need to do it today";
+      }
       const words = getWordsByDifficulty(mode.difficulty);
       const randomWord = words[Math.floor(Math.random() * words.length)];
       return randomWord.word;
