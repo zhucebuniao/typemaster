@@ -229,29 +229,29 @@ function App() {
         </main>
         
         {/* Enhanced Footer */}
-        <footer className="mt-20 relative">
-          <div className="absolute inset-0 bg-gradient-to-r from-slate-800/50 via-game-surface/50 to-slate-800/50 backdrop-blur-sm"></div>
-          <div className="relative border-t border-gradient-to-r from-transparent via-gray-600 to-transparent">
-            <div className="max-w-6xl mx-auto px-6 py-12 text-center">
+        <footer className="mt-12 sm:mt-20 relative">
+          <div className="absolute inset-0 glass-dark"></div>
+          <div className="relative border-t border-apple-separator">
+            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 text-center">
               <div className="mb-6">
-                <h3 className="text-xl font-bold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent mb-2">
+                <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-apple-primary to-apple-secondary bg-clip-text text-transparent mb-2">
                   Typemaster
                 </h3>
-                <p className="text-gray-400 max-w-2xl mx-auto leading-relaxed">
+                <p className="text-apple-text-secondary max-w-2xl mx-auto leading-relaxed text-sm sm:text-base px-4">
                   Master your typing skills and enhance your vocabulary with our modern, interactive typing game.
                 </p>
               </div>
               
-              <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-8 text-sm text-gray-500 mb-6">
+              <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-8 text-sm text-apple-text-secondary mb-6">
                 <span className="flex items-center space-x-2">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                  <span className="w-2 h-2 bg-apple-success rounded-full animate-pulse"></span>
                   <span>© 2024 Typemaster</span>
                 </span>
                 <span className="hidden sm:block">•</span>
                 <span>2D Typing & English Learning Game</span>
               </div>
               
-              <div className="flex flex-wrap justify-center items-center space-x-6 text-xs text-gray-600">
+              <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 text-xs text-apple-text-secondary">
                 <span className="flex items-center space-x-1">
                   <span>⚛️</span>
                   <span>React</span>
