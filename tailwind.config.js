@@ -8,8 +8,8 @@ export default {
     extend: {
       fontFamily: {
         'mono': ['Fira Code', 'Monaco', 'Consolas', 'monospace'],
-        'orbitron': ['Orbitron', 'system-ui', 'sans-serif'],
-        'cyber': ['Orbitron', 'Exo 2', 'system-ui', 'sans-serif'],
+        'orbitron': ['Orbitron', 'Exo 2', 'Rajdhani', 'Electrolize', 'system-ui', 'sans-serif'],
+        'cyber': ['Orbitron', 'Exo 2', 'Rajdhani', 'system-ui', 'sans-serif'],
       },
       colors: {
         'game': {

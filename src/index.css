@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@400;500;600;700&family=Rajdhani:wght@400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -12,6 +12,13 @@ body {
   color: #FFFFFF;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure cyber fonts load with good fallbacks */
+.font-orbitron {
+  font-family: 'Orbitron', 'Exo 2', 'Rajdhani', 'Impact', 'Arial Black', system-ui, sans-serif !important;
+  font-weight: 600;
+  letter-spacing: 0.05em;
 }
 
 /* Custom animations */

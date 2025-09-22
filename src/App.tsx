@@ -126,15 +126,15 @@ function App() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3 sm:space-x-6">
-            <h1 className="text-2xl sm:text-3xl font-bold font-orbitron">
-              <span className="bg-gradient-to-r from-cyber-electric via-cyber-neon to-blue-400 bg-clip-text text-transparent drop-shadow-lg">
-                Type
+            <h1 className="text-3xl sm:text-4xl font-black font-orbitron tracking-wide">
+              <span className="bg-gradient-to-r from-cyber-electric via-cyan-300 to-cyber-neon bg-clip-text text-transparent drop-shadow-lg">
+                TYPE
               </span>
-              <span className="text-cyber-text drop-shadow-lg">master</span>
+              <span className="text-cyber-text drop-shadow-lg">MASTER</span>
             </h1>
             <div className="hidden sm:flex items-center">
-              <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-cyber-neon to-cyber-electric text-white rounded-full shadow-cyber-glow animate-cyber-pulse">
-                v2.0 Cyber
+              <span className="px-4 py-2 text-sm font-bold bg-gradient-to-r from-cyber-neon to-cyber-electric text-white rounded-full shadow-cyber-glow animate-cyber-pulse tracking-wider">
+                v2.0 CYBER
               </span>
             </div>
           </div>

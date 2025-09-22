@@ -110,16 +110,16 @@ const GameModeSelector: React.FC<GameModeSelectorProps> = ({ onModeSelect, userP
   return (
     <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
       <div className="text-center mb-8 sm:mb-12">
-        <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-orbitron bg-gradient-to-r from-cyber-electric via-cyber-neon to-cyan-400 bg-clip-text text-transparent mb-4 sm:mb-6 drop-shadow-2xl">
-          Start Your Typing Journey
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black font-orbitron bg-gradient-to-r from-cyber-electric via-cyan-300 to-cyber-neon bg-clip-text text-transparent mb-4 sm:mb-6 drop-shadow-2xl tracking-wide">
+          START YOUR TYPING JOURNEY
         </h2>
-        <p className="text-lg sm:text-xl md:text-2xl text-cyber-text-muted max-w-3xl mx-auto leading-relaxed px-2 mb-2">
+        <p className="text-xl sm:text-2xl md:text-3xl text-cyber-text-muted max-w-4xl mx-auto leading-relaxed px-2 mb-2 font-light">
           Master the keyboard, one word at a time.
         </p>
-        <div className="flex items-center justify-center space-x-3 mt-4">
-          <div className="px-4 py-2 bg-gradient-to-r from-cyber-electric/20 to-cyber-neon/20 rounded-full border border-cyber-electric/30 backdrop-blur-sm">
-            <span className="text-sm font-semibold text-cyber-electric">Level {currentLevel.level}</span>
-            <span className="text-sm text-cyber-text-muted ml-2">- {currentLevel.name}</span>
+        <div className="flex items-center justify-center space-x-3 mt-6">
+          <div className="px-6 py-3 bg-gradient-to-r from-cyber-electric/20 to-cyber-neon/20 rounded-full border border-cyber-electric/40 backdrop-blur-sm animate-cyber-pulse">
+            <span className="text-base font-bold text-cyber-electric">Level {currentLevel.level}</span>
+            <span className="text-base text-cyber-text-muted ml-3">- {currentLevel.name}</span>
           </div>
         </div>
       </div>
@@ -155,19 +155,19 @@ const GameModeSelector: React.FC<GameModeSelectorProps> = ({ onModeSelect, userP
               
               {/* Icon with enhanced glow effect */}
               <div className="relative z-10">
-                <div className={`text-5xl sm:text-6xl mb-4 sm:mb-6 transform transition-all duration-500 filter drop-shadow-2xl ${
-                  !isLocked ? 'group-hover:scale-125 group-hover:rotate-6' : ''
+                <div className={`text-6xl sm:text-7xl mb-6 sm:mb-8 transform transition-all duration-500 filter drop-shadow-2xl ${
+                  !isLocked ? 'group-hover:scale-110 group-hover:-rotate-12' : ''
                 }`}>
                   {mode.icon}
                 </div>
                 
-                <h3 className={`text-xl sm:text-2xl font-bold font-orbitron mb-3 sm:mb-4 transition-all duration-300 ${
+                <h3 className={`text-2xl sm:text-3xl font-black font-orbitron mb-4 sm:mb-6 transition-all duration-300 tracking-wide uppercase ${
                   isLocked ? 'text-cyber-text-muted' : 'text-cyber-text group-hover:text-white group-hover:drop-shadow-lg'
                 }`}>
                   {mode.name}
                 </h3>
                 
-                <p className={`transition-colors duration-300 leading-relaxed mb-4 sm:mb-6 text-sm sm:text-base ${
+                <p className={`transition-colors duration-300 leading-relaxed mb-6 sm:mb-8 text-base sm:text-lg ${
                   isLocked ? 'text-cyber-text-muted/70' : 'text-cyber-text-muted group-hover:text-cyber-text-muted/90'
                 }`}>
                   {mode.description}
@@ -175,14 +175,14 @@ const GameModeSelector: React.FC<GameModeSelectorProps> = ({ onModeSelect, userP
                 
                 <div className="flex justify-center">
                   <span
-                    className={`inline-flex items-center px-4 py-2 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+                    className={`inline-flex items-center px-6 py-3 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 ${
                       isLocked
                         ? 'bg-cyber-border text-cyber-text-muted'
                         : mode.difficulty === 'easy'
-                        ? 'bg-gradient-to-r from-cyber-green to-green-400 text-black shadow-green-glow group-hover:shadow-green-glow'
+                        ? 'bg-gradient-to-r from-cyber-green to-green-300 text-black shadow-green-glow group-hover:shadow-green-glow'
                         : mode.difficulty === 'medium'
-                        ? 'bg-gradient-to-r from-cyber-orange to-yellow-400 text-black shadow-orange-glow group-hover:shadow-orange-glow'
-                        : 'bg-gradient-to-r from-cyber-red to-red-400 text-white shadow-red-glow group-hover:shadow-red-glow'
+                        ? 'bg-gradient-to-r from-cyber-orange to-yellow-300 text-black shadow-orange-glow group-hover:shadow-orange-glow'
+                        : 'bg-gradient-to-r from-cyber-red to-red-300 text-white shadow-red-glow group-hover:shadow-red-glow'
                     }`}
                   >
                     {mode.difficulty}
