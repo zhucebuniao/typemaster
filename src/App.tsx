@@ -126,15 +126,15 @@ function App() {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3 sm:space-x-6">
-            <h1 className="text-2xl sm:text-3xl font-bold">
-              <span className="bg-gradient-to-r from-apple-primary via-blue-400 to-apple-secondary bg-clip-text text-transparent">
+            <h1 className="text-2xl sm:text-3xl font-bold font-orbitron">
+              <span className="bg-gradient-to-r from-cyber-electric via-cyber-neon to-blue-400 bg-clip-text text-transparent drop-shadow-lg">
                 Type
               </span>
-              <span className="text-apple-text">master</span>
+              <span className="text-cyber-text drop-shadow-lg">master</span>
             </h1>
             <div className="hidden sm:flex items-center">
-              <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-apple-secondary to-apple-primary text-white rounded-full shadow-apple">
-                v1.1 Gaming
+              <span className="px-3 py-1 text-xs font-semibold bg-gradient-to-r from-cyber-neon to-cyber-electric text-white rounded-full shadow-cyber-glow animate-cyber-pulse">
+                v2.0 Cyber
               </span>
             </div>
           </div>
@@ -214,12 +214,12 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-apple-bg text-apple-text relative overflow-x-hidden">
-      {/* Background decorative elements */}
+    <div className="min-h-screen bg-cyber-bg text-cyber-text relative overflow-x-hidden">
+      {/* Background decorative elements - Cyber theme */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-apple-primary/5 rounded-full blur-3xl"></div>
-        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-apple-secondary/5 rounded-full blur-3xl"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-apple-success/5 rounded-full blur-3xl"></div>
+        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyber-electric/5 rounded-full blur-3xl animate-cyber-pulse"></div>
+        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-cyber-neon/5 rounded-full blur-3xl animate-neon-pulse"></div>
+        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-cyber-green/5 rounded-full blur-3xl"></div>
       </div>
       
       <div className="relative z-10">
