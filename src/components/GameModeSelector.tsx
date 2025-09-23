@@ -1,4 +1,6 @@
 import React from 'react';
+import ModernCard from './ui/ModernCard';
+import ModernButton from './ui/ModernButton';
 import type { UserProgress } from '../types/game';
 import { getLevelInfo } from '../data/levels';
 
@@ -9,6 +11,7 @@ export interface GameMode {
   difficulty: 'easy' | 'medium' | 'hard';
   icon: string;
   requiredLevel?: number;
+  type?: 'words' | 'sentences' | 'coding';
 }
 
 interface GameModeSelectorProps {
@@ -24,6 +27,7 @@ const gameModes: GameMode[] = [
     difficulty: 'easy',
     icon: '🌱',
     requiredLevel: 1,
+    type: 'words',
   },
   {
     id: 'sentences-easy',
@@ -32,6 +36,7 @@ const gameModes: GameMode[] = [
     difficulty: 'easy',
     icon: '📝',
     requiredLevel: 2,
+    type: 'sentences',
   },
   {
     id: 'words-medium',
@@ -40,6 +45,7 @@ const gameModes: GameMode[] = [
     difficulty: 'medium',
     icon: '🌿',
     requiredLevel: 3,
+    type: 'words',
   },
   {
     id: 'sentences-medium',
@@ -48,6 +54,7 @@ const gameModes: GameMode[] = [
     difficulty: 'medium',
     icon: '📄',
     requiredLevel: 4,
+    type: 'sentences',
   },
   {
     id: 'words-hard',
@@ -56,6 +63,7 @@ const gameModes: GameMode[] = [
     difficulty: 'hard',
     icon: '🌳',
     requiredLevel: 5,
+    type: 'words',
   },
   {
     id: 'sentences-hard',
@@ -64,6 +72,7 @@ const gameModes: GameMode[] = [
     difficulty: 'hard',
     icon: '📜',
     requiredLevel: 5,
+    type: 'sentences',
   },
   {
     id: 'coding',
@@ -72,6 +81,7 @@ const gameModes: GameMode[] = [
     difficulty: 'hard',
     icon: '💻',
     requiredLevel: 6,
+    type: 'coding',
   },
 ];
 
@@ -81,128 +91,168 @@ const GameModeSelector: React.FC<GameModeSelectorProps> = ({ onModeSelect, userP
   const isModeLocked = (mode: GameMode): boolean => {
     return mode.requiredLevel ? currentLevel.level < mode.requiredLevel : false;
   };
+
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
       case 'easy':
-        return 'border-cyber-green/60 hover:border-cyber-green/80 shadow-green-glow hover:shadow-green-glow';
+        return 'from-green-500 to-emerald-500';
       case 'medium':
-        return 'border-cyber-orange/60 hover:border-cyber-orange/80 shadow-orange-glow hover:shadow-orange-glow';
+        return 'from-yellow-500 to-orange-500';
       case 'hard':
-        return 'border-cyber-red/60 hover:border-cyber-red/80 shadow-red-glow hover:shadow-red-glow';
+        return 'from-red-500 to-pink-500';
       default:
-        return 'border-cyber-border hover:border-cyber-text-muted';
+        return 'from-gray-500 to-gray-600';
     }
   };
 
-  const getDifficultyBg = (difficulty: string) => {
+  const getDifficultyIcon = (difficulty: string) => {
     switch (difficulty) {
       case 'easy':
-        return 'bg-cyber-green/10 hover:bg-cyber-green/15';
+        return '🟢';
       case 'medium':
-        return 'bg-cyber-orange/10 hover:bg-cyber-orange/15';
+        return '🟡';
       case 'hard':
-        return 'bg-cyber-red/10 hover:bg-cyber-red/15';
+        return '🔴';
       default:
-        return 'bg-cyber-card/50';
+        return '⚪';
     }
   };
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-6">
-      <div className="text-center mb-8 sm:mb-12">
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-black font-orbitron bg-gradient-to-r from-cyber-electric via-cyan-300 to-cyber-neon bg-clip-text text-transparent mb-4 sm:mb-6 drop-shadow-2xl tracking-wide">
-          START YOUR TYPING JOURNEY
-        </h2>
-        <p className="text-xl sm:text-2xl md:text-3xl text-cyber-text-muted max-w-4xl mx-auto leading-relaxed px-2 mb-2 font-light">
-          Master the keyboard, one word at a time.
-        </p>
-        <div className="flex items-center justify-center space-x-3 mt-6">
-          <div className="px-6 py-3 bg-gradient-to-r from-cyber-electric/20 to-cyber-neon/20 rounded-full border border-cyber-electric/40 backdrop-blur-sm animate-cyber-pulse">
-            <span className="text-base font-bold text-cyber-electric">Level {currentLevel.level}</span>
-            <span className="text-base text-cyber-text-muted ml-3">- {currentLevel.name}</span>
-          </div>
+    <div className="w-full max-w-7xl mx-auto space-y-12">
+      {/* Hero section */}
+      <div className="text-center space-y-6">
+        <div className="space-y-4">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black font-display tracking-tight">
+            <span className="gradient-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+              START YOUR
+            </span>
+            <br />
+            <span className="gradient-text bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 bg-clip-text text-transparent">
+              NEURAL JOURNEY
+            </span>
+          </h1>
+          
+          <p className="text-xl sm:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
+            Master the keyboard with AI-powered learning and next-generation UX
+          </p>
         </div>
+        
+        {/* Level indicator */}
+        <ModernCard className="max-w-md mx-auto" hover={false}>
+          <div className="flex items-center justify-center space-x-4">
+            <div className="flex items-center space-x-2">
+              <div className="w-4 h-4 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse"></div>
+              <span className="text-lg font-semibold text-green-400">Level {currentLevel.level}</span>
+            </div>
+            <div className="w-px h-6 bg-gray-600"></div>
+            <span className="text-gray-300">{currentLevel.name}</span>
+          </div>
+        </ModernCard>
       </div>
-
-      <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 sm:gap-8">
+      
+      {/* Game modes grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6 lg:gap-8">
         {gameModes.map((mode) => {
-          const isLocked = isModeLocked(mode);
+          const locked = isModeLocked(mode);
           return (
-            <button
+            <ModernCard
               key={mode.id}
-              onClick={() => !isLocked && onModeSelect(mode)}
-              disabled={isLocked}
-              className={`relative p-8 sm:p-10 rounded-2xl transition-all duration-300 group overflow-hidden backdrop-blur-xl border-2 ${
-                isLocked 
-                  ? 'opacity-50 cursor-not-allowed border-cyber-border bg-cyber-card/30' 
-                  : `hover:scale-[1.03] active:scale-95 transform hover:shadow-2xl ${getDifficultyColor(mode.difficulty)} ${getDifficultyBg(mode.difficulty)}`
-              }`}
+              className={`group relative overflow-hidden ${locked ? 'opacity-60' : ''}`}
+              hover={!locked}
+              glow={!locked}
+              disabled={locked}
+              onClick={() => !locked && onModeSelect(mode)}
             >
-              {/* Lock overlay */}
-              {isLocked && (
-                <div className="absolute inset-0 bg-black/70 flex items-center justify-center z-20 rounded-2xl backdrop-blur-sm">
-                  <div className="text-center">
-                    <div className="text-4xl sm:text-5xl mb-3 filter drop-shadow-lg">🔒</div>
-                    <div className="text-sm sm:text-base font-bold text-cyber-text-muted">
-                      Requires Level {mode.requiredLevel}
+              <div className="relative z-10 space-y-4">
+                {/* Mode header */}
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center space-x-3">
+                    <div className="text-3xl">{mode.icon}</div>
+                    <div>
+                      <h3 className="text-xl font-bold text-white group-hover:gradient-text transition-all duration-300">
+                        {mode.name}
+                      </h3>
+                      <div className="flex items-center space-x-2 mt-1">
+                        <span className="text-sm">{getDifficultyIcon(mode.difficulty)}</span>
+                        <span className={`text-sm font-medium bg-gradient-to-r ${getDifficultyColor(mode.difficulty)} bg-clip-text text-transparent`}>
+                          {mode.difficulty.toUpperCase()}
+                        </span>
+                      </div>
                     </div>
+                  </div>
+                  
+                  {locked && (
+                    <div className="flex items-center space-x-1 px-2 py-1 bg-red-500/20 rounded-lg border border-red-500/30">
+                      <span className="text-red-400 text-sm">🔒</span>
+                      <span className="text-xs text-red-300">Level {mode.requiredLevel}</span>
+                    </div>
+                  )}
+                </div>
+                
+                {/* Mode description */}
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  {mode.description}
+                </p>
+                
+                {/* Hover effect overlay */}
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
+                  <div className={`absolute inset-0 bg-gradient-to-br ${getDifficultyColor(mode.difficulty)} opacity-5 rounded-modern-lg`}></div>
+                </div>
+              </div>
+              
+              {/* Locked overlay */}
+              {locked && (
+                <div className="absolute inset-0 bg-black/50 backdrop-blur-sm rounded-modern-lg flex items-center justify-center">
+                  <div className="text-center text-gray-400">
+                    <div className="text-2xl mb-2">🔒</div>
+                    <div className="text-sm font-medium">Requires Level {mode.requiredLevel}</div>
                   </div>
                 </div>
               )}
               
-              {/* Cyber gradient overlay */}
-              <div className="absolute inset-0 bg-gradient-to-br from-cyber-electric/5 via-transparent to-cyber-neon/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              
-              {/* Icon with enhanced glow effect */}
-              <div className="relative z-10">
-                <div className={`text-6xl sm:text-7xl mb-6 sm:mb-8 transform transition-all duration-500 filter drop-shadow-2xl ${
-                  !isLocked ? 'group-hover:scale-110 group-hover:-rotate-12' : ''
-                }`}>
-                  {mode.icon}
-                </div>
-                
-                <h3 className={`text-2xl sm:text-3xl font-black font-orbitron mb-4 sm:mb-6 transition-all duration-300 tracking-wide uppercase ${
-                  isLocked ? 'text-cyber-text-muted' : 'text-cyber-text group-hover:text-white group-hover:drop-shadow-lg'
-                }`}>
-                  {mode.name}
-                </h3>
-                
-                <p className={`transition-colors duration-300 leading-relaxed mb-6 sm:mb-8 text-base sm:text-lg ${
-                  isLocked ? 'text-cyber-text-muted/70' : 'text-cyber-text-muted group-hover:text-cyber-text-muted/90'
-                }`}>
-                  {mode.description}
-                </p>
-                
-                <div className="flex justify-center">
-                  <span
-                    className={`inline-flex items-center px-6 py-3 rounded-full text-sm font-black uppercase tracking-widest transition-all duration-300 ${
-                      isLocked
-                        ? 'bg-cyber-border text-cyber-text-muted'
-                        : mode.difficulty === 'easy'
-                        ? 'bg-gradient-to-r from-cyber-green to-green-300 text-black shadow-green-glow group-hover:shadow-green-glow'
-                        : mode.difficulty === 'medium'
-                        ? 'bg-gradient-to-r from-cyber-orange to-yellow-300 text-black shadow-orange-glow group-hover:shadow-orange-glow'
-                        : 'bg-gradient-to-r from-cyber-red to-red-300 text-white shadow-red-glow group-hover:shadow-red-glow'
-                    }`}
-                  >
-                    {mode.difficulty}
-                  </span>
-                </div>
-              </div>
-              
-              {/* Enhanced border glow effect */}
-              {!isLocked && (
-                <div className={`absolute inset-0 rounded-2xl transition-all duration-500 group-hover:animate-glow-expand ${
-                  mode.difficulty === 'easy'
-                    ? 'group-hover:shadow-[0_0_40px_rgba(57,255,20,0.4)]'
-                    : mode.difficulty === 'medium'
-                    ? 'group-hover:shadow-[0_0_40px_rgba(255,140,0,0.4)]'
-                    : 'group-hover:shadow-[0_0_40px_rgba(255,7,58,0.4)]'
-                }`} />
+              {/* Gradient border effect */}
+              {!locked && (
+                <div className={`absolute inset-0 bg-gradient-to-r ${getDifficultyColor(mode.difficulty)} opacity-0 group-hover:opacity-20 transition-opacity duration-300 rounded-modern-lg blur-xl`}></div>
               )}
-            </button>
+            </ModernCard>
           );
         })}
+      </div>
+      
+      {/* Quick action section */}
+      <div className="text-center space-y-6">
+        <ModernCard className="max-w-2xl mx-auto" hover={false}>
+          <div className="space-y-4">
+            <h3 className="text-2xl font-bold gradient-text">
+              Ready to Begin?
+            </h3>
+            <p className="text-gray-300">
+              Start with Easy Words to build your foundation, or choose any unlocked mode that matches your skill level.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <ModernButton
+                variant="primary"
+                size="lg"
+                onClick={() => onModeSelect(gameModes[0])}
+                icon={<span>🚀</span>}
+              >
+                Quick Start
+              </ModernButton>
+              <ModernButton
+                variant="outline"
+                size="lg"
+                onClick={() => {
+                  // Future: Open tutorial or settings
+                  console.log('Tutorial clicked');
+                }}
+                icon={<span>📚</span>}
+              >
+                Tutorial
+              </ModernButton>
+            </div>
+          </div>
+        </ModernCard>
       </div>
     </div>
   );

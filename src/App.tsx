@@ -2,6 +2,10 @@ import { useState, useEffect } from 'react';
 import TypingGame from './components/TypingGame';
 import GameModeSelector, { type GameMode } from './components/GameModeSelector';
 import StatsDisplay from './components/StatsDisplay';
+import ModernCard from './components/ui/ModernCard';
+import ModernButton from './components/ui/ModernButton';
+import ParticleBackground from './components/ui/ParticleBackground';
+import FloatingActionButton from './components/ui/FloatingActionButton';
 import type { UserProgress } from './types/game';
 import { loadUserProgress, saveUserProgress, addMistakeWord, addToLeaderboard } from './utils/storage';
 import { getWordsByDifficulty, getSentencesByDifficulty, getCodingWords, getCodingSentences } from './data/words';
@@ -50,6 +54,10 @@ function App() {
   };
 
   const handleModeSelect = (mode: GameMode) => {
+    handleGameStart(mode);
+  };
+  
+  const handleGameStart = (mode: GameMode) => {
     setCurrentMode(mode);
     const text = getRandomContent(mode);
     setCurrentText(text);
@@ -126,58 +134,71 @@ function App() {
   };
 
   const renderHeader = () => (
-    <header className="w-full glass-dark shadow-apple-lg border-b border-apple-separator">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-5">
+    <header className="relative">
+      {/* Animated background */}
+      <div className="absolute inset-0 mesh-gradient-1 opacity-20"></div>
+      <div className="absolute inset-0 glass-modern"></div>
+      
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-3 sm:space-x-6">
-            <h1 className="text-3xl sm:text-4xl font-black font-orbitron tracking-wide">
-              <span className="bg-gradient-to-r from-cyber-electric via-cyan-300 to-cyber-neon bg-clip-text text-transparent drop-shadow-lg">
-                TYPE
-              </span>
-              <span className="text-cyber-text drop-shadow-lg">MASTER</span>
-            </h1>
-            <div className="hidden sm:flex items-center">
-              <span className="px-4 py-2 text-sm font-bold bg-gradient-to-r from-cyber-neon to-cyber-electric text-white rounded-full shadow-cyber-glow animate-cyber-pulse tracking-wider">
-                v2.0 CYBER
+          {/* Modern logo */}
+          <div className="flex items-center space-x-6">
+            <div className="group">
+              <h1 className="text-4xl sm:text-5xl font-display font-black tracking-tight">
+                <span className="gradient-text bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 bg-clip-text text-transparent">
+                  TYPE
+                </span>
+                <span className="text-white ml-2">MASTER</span>
+              </h1>
+              <div className="h-1 w-full bg-gradient-to-r from-blue-400 via-purple-500 to-pink-500 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-500"></div>
+            </div>
+            
+            {/* Version badge */}
+            <div className="hidden sm:block">
+              <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-300 border border-cyan-500/30 animate-pulse-glow">
+                v3.0 Neural
               </span>
             </div>
           </div>
           
-          <nav className="flex items-center space-x-2">
+          {/* Navigation */}
+          <nav className="flex items-center space-x-4">
             {appState !== 'menu' && (
-              <button
+              <ModernButton
+                variant="ghost"
+                size="md"
                 onClick={() => setAppState('menu')}
-                className="flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2.5 text-apple-text-secondary hover:text-apple-text hover:bg-white/10 rounded-apple transition-all duration-300 hover:shadow-apple backdrop-blur-sm border border-transparent hover:border-white/20"
+                icon={<span className="text-xl">🏠</span>}
+                className="hover:bg-blue-500/20"
               >
-                <span className="text-base sm:text-lg">🏠</span>
-                <span className="font-medium text-sm sm:text-base hidden sm:inline">Home</span>
-              </button>
+                <span className="hidden sm:inline ml-2">Home</span>
+              </ModernButton>
             )}
-            <button
-              onClick={() => setAppState('stats')}
-              className={`flex items-center space-x-1 sm:space-x-2 px-3 sm:px-4 py-2.5 rounded-apple transition-all duration-300 hover:shadow-apple backdrop-blur-sm border font-medium text-sm sm:text-base ${
-                appState === 'stats' 
-                  ? 'bg-apple-primary/20 text-apple-primary border-apple-primary/30 shadow-apple-primary/25 shadow-lg' 
-                  : 'text-apple-text-secondary hover:text-apple-text hover:bg-white/10 border-transparent hover:border-white/20'
-              }`}
-            >
-              <span className="text-base sm:text-lg">📊</span>
-              <span className="hidden sm:inline">Stats</span>
-            </button>
             
-            <div className="flex items-center space-x-2 sm:space-x-4 ml-2 sm:ml-4 pl-2 sm:pl-4 border-l border-apple-separator">
-              <div className="flex items-center space-x-2 sm:space-x-3 glass-card px-3 sm:px-4 py-2 rounded-apple shadow-apple">
-                <div className="flex items-center space-x-1 sm:space-x-2">
-                  <span className="w-2 h-2 bg-apple-success rounded-full animate-pulse"></span>
-                  <span className="text-xs sm:text-sm font-semibold text-apple-success">Level {userProgress.level}</span>
+            <ModernButton
+              variant={appState === 'stats' ? 'primary' : 'ghost'}
+              size="md"
+              onClick={() => setAppState('stats')}
+              icon={<span className="text-xl">📊</span>}
+              className={appState === 'stats' ? 'shadow-glow-blue' : 'hover:bg-purple-500/20'}
+            >
+              <span className="hidden sm:inline ml-2">Stats</span>
+            </ModernButton>
+            
+            {/* User progress display */}
+            <ModernCard className="p-3" hover={false}>
+              <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2">
+                  <div className="w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full animate-pulse"></div>
+                  <span className="text-sm font-semibold text-green-400">Level {userProgress.level}</span>
                 </div>
-                <span className="text-apple-text-secondary hidden sm:inline">•</span>
+                <div className="w-px h-4 bg-gray-600"></div>
                 <div className="flex items-center space-x-1">
-                  <span className="text-xs sm:text-sm font-semibold text-apple-warning">{userProgress.totalScore}</span>
-                  <span className="text-xs text-apple-text-secondary hidden sm:inline">pts</span>
+                  <span className="text-sm font-semibold text-yellow-400">{userProgress.totalScore}</span>
+                  <span className="text-xs text-gray-400">pts</span>
                 </div>
               </div>
-            </div>
+            </ModernCard>
           </nav>
         </div>
       </div>
@@ -218,65 +239,100 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-cyber-bg text-cyber-text relative overflow-x-hidden">
-      {/* Background decorative elements - Cyber theme */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-cyber-electric/5 rounded-full blur-3xl animate-cyber-pulse"></div>
-        <div className="absolute top-1/3 right-1/4 w-80 h-80 bg-cyber-neon/5 rounded-full blur-3xl animate-neon-pulse"></div>
-        <div className="absolute bottom-1/4 left-1/3 w-72 h-72 bg-cyber-green/5 rounded-full blur-3xl"></div>
-      </div>
+    <div className="min-h-screen text-white font-display overflow-x-hidden">
+      {/* Particle background */}
+      <ParticleBackground density="medium" />
       
+      {/* Main content */}
       <div className="relative z-10">
         {renderHeader()}
-        <main className="py-6 sm:py-12">
-          {renderContent()}
+        
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+          <div className="animate-fade-in-up">
+            {renderContent()}
+          </div>
         </main>
         
-        {/* Enhanced Footer */}
-        <footer className="mt-12 sm:mt-20 relative">
-          <div className="absolute inset-0 glass-dark"></div>
-          <div className="relative border-t border-apple-separator">
-            <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12 text-center">
-              <div className="mb-6">
-                <h3 className="text-lg sm:text-xl font-bold bg-gradient-to-r from-apple-primary to-apple-secondary bg-clip-text text-transparent mb-2">
-                  Typemaster
-                </h3>
-                <p className="text-apple-text-secondary max-w-2xl mx-auto leading-relaxed text-sm sm:text-base px-4">
-                  Master your typing skills and enhance your vocabulary with our modern, interactive typing game.
-                </p>
-              </div>
-              
-              <div className="flex flex-col sm:flex-row items-center justify-center space-y-2 sm:space-y-0 sm:space-x-8 text-sm text-apple-text-secondary mb-6">
-                <span className="flex items-center space-x-2">
-                  <span className="w-2 h-2 bg-apple-success rounded-full animate-pulse"></span>
-                  <span>© 2024 Typemaster</span>
-                </span>
-                <span className="hidden sm:block">•</span>
-                <span>2D Typing & English Learning Game</span>
-              </div>
-              
-              <div className="flex flex-wrap justify-center items-center gap-4 sm:gap-6 text-xs text-apple-text-secondary">
-                <span className="flex items-center space-x-1">
-                  <span>⚛️</span>
-                  <span>React</span>
-                </span>
-                <span className="flex items-center space-x-1">
-                  <span>🎨</span>
-                  <span>Tailwind CSS</span>
-                </span>
-                <span className="flex items-center space-x-1">
-                  <span>📘</span>
-                  <span>TypeScript</span>
-                </span>
-                <span className="flex items-center space-x-1">
-                  <span>▲</span>
-                  <span>Vercel</span>
-                </span>
-              </div>
+        {/* Modern footer */}
+        <footer className="relative mt-20">
+          <div className="absolute inset-0 mesh-gradient-2 opacity-10"></div>
+          <div className="relative glass-modern border-t border-white/10">
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
+              <ModernCard className="max-w-4xl mx-auto" hover={false}>
+                <div className="space-y-6">
+                  <div>
+                    <h3 className="text-2xl font-bold gradient-text mb-3">
+                      Typemaster Neural
+                    </h3>
+                    <p className="text-gray-300 text-lg">
+                      Master your typing skills with AI-powered learning and next-generation UX
+                    </p>
+                  </div>
+                  
+                  <div className="text-sm text-gray-400 space-y-2">
+                    <div>© 2024 Typemaster • Neural-Enhanced Typing Experience</div>
+                    <div className="flex items-center justify-center space-x-6 text-xs">
+                      <span className="flex items-center space-x-1">
+                        <span>⚛️</span>
+                        <span>React 19</span>
+                      </span>
+                      <span className="flex items-center space-x-1">
+                        <span>🎨</span>
+                        <span>Tailwind 4.0</span>
+                      </span>
+                      <span className="flex items-center space-x-1">
+                        <span>📘</span>
+                        <span>TypeScript</span>
+                      </span>
+                      <span className="flex items-center space-x-1">
+                        <span>⚡</span>
+                        <span>Vite</span>
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </ModernCard>
             </div>
           </div>
         </footer>
       </div>
+      
+      {/* Floating action buttons */}
+      {appState === 'menu' && (
+        <FloatingActionButton
+          position="bottom-right"
+          variant="primary"
+          tooltip="Quick Start"
+          onClick={() => {
+            const easyMode: GameMode = { 
+              id: 'words-easy', 
+              name: 'Easy Words', 
+              description: 'Practice with simple, common words',
+              difficulty: 'easy', 
+              type: 'words',
+              icon: '🌱',
+              requiredLevel: 1
+            };
+            handleGameStart(easyMode);
+          }}
+        >
+          <span className="text-xl">🚀</span>
+        </FloatingActionButton>
+      )}
+      
+      {(appState === 'game' || appState === 'stats') && (
+        <FloatingActionButton
+          position="bottom-left"
+          variant="secondary"
+          tooltip="Settings"
+          onClick={() => {
+            // Future: Open settings modal
+            console.log('Settings clicked');
+          }}
+        >
+          <span className="text-xl">⚙️</span>
+        </FloatingActionButton>
+      )}
     </div>
   );
 }
