@@ -1,92 +1,59 @@
 :root {
-  font-family: "Noto Serif SC", "Source Han Serif SC", serif;
-  color: #241f19;
-  background: #ece4d8;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
+  color: #231d16;
+  background: #ece3d6;
 }
-
 * { box-sizing: border-box; }
 body { margin: 0; }
 
-.game {
+.app {
   min-height: 100vh;
-  padding: 0.75rem;
-  display: grid;
-  gap: 0.75rem;
+  padding: 1rem;
   background:
-    radial-gradient(circle at 20% 0%, rgba(255,255,255,0.5), transparent 45%),
-    linear-gradient(180deg, #efe6d7, #ded0ba);
+    radial-gradient(circle at 10% 0%, rgba(255,255,255,0.55), transparent 40%),
+    linear-gradient(180deg, #eee5d8, #e2d3bc);
+  display: grid;
+  gap: 1rem;
 }
 
 .panel {
-  background: rgba(253, 249, 241, 0.88);
-  border: 1px solid rgba(63, 51, 37, 0.3);
-  border-radius: 12px;
-  padding: 0.75rem;
-  box-shadow: 0 6px 16px rgba(55, 43, 28, 0.12);
+  background: rgba(253, 249, 240, 0.9);
+  border: 1px solid rgba(57, 44, 28, 0.25);
+  border-radius: 14px;
+  box-shadow: 0 8px 20px rgba(48, 37, 25, 0.1);
 }
 
-h1,h2,p { margin: 0; }
-h1 { font-size: 1.2rem; letter-spacing: 0.08em; }
-h2 { font-size: 1rem; margin-bottom: 0.4rem; }
+.intro { padding: 1rem; }
+.intro h1 { margin: 0 0 .45rem; font-size: 1.45rem; letter-spacing: .03em; }
+.intro p { margin: 0; line-height: 1.45; color: #4e4131; }
 
-.stats {
-  margin-top: 0.5rem;
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.9rem;
-}
-
-.spirit p { color: #4d4337; font-size: 0.9rem; }
-
-.hand-grid {
-  margin-top: 0.5rem;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 0.45rem;
-}
-
-.card {
-  border: 1px solid #5d4f3f;
-  background: linear-gradient(160deg, #fdf8ed, #eee0c8);
+.workspace { display: grid; gap: 1rem; }
+.controls { padding: 1rem; display: grid; gap: .7rem; align-content: start; }
+.controls label { font-weight: 600; font-size: .92rem; }
+input[type="text"], .controls input:not([type="range"]) {
+  border: 1px solid rgba(56, 45, 31, .35);
   border-radius: 10px;
-  min-height: 74px;
-  padding: 0.35rem;
-  text-align: left;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  padding: .6rem .7rem;
+  background: rgba(255,255,255,.9);
 }
-
-.card strong { font-size: 1.35rem; align-self: flex-end; }
-.card small { font-size: 0.72rem; color: #564b3f; }
-.card.active {
-  border-color: #1d1a14;
-  box-shadow: 0 0 0 2px rgba(44, 33, 22, 0.35) inset;
-}
-
-.actions p { font-size: 0.9rem; color: #4a4034; }
-.btn-row {
-  margin-top: 0.6rem;
-  display: grid;
-  gap: 0.5rem;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-}
-
+.preset-row, .action-row { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: .5rem; }
 button {
   border: none;
-  border-radius: 8px;
-  background: #2b231a;
-  color: #f5eddd;
-  padding: 0.55rem 0.45rem;
+  border-radius: 10px;
+  padding: .55rem .6rem;
+  background: #2a231b;
+  color: #f4eddf;
+  cursor: pointer;
 }
+button.active { background: #1e5eff; }
+.slider-group { display: grid; gap: .35rem; }
+.slider-group div { display: flex; justify-content: space-between; font-size: .88rem; }
+input[type="range"] { width: 100%; }
 
-button:disabled { opacity: 0.5; }
-.result { margin-top: 0.6rem; color: #164e2b; }
-.result.fail { color: #7b1f1f; }
+.canvas-wrap { padding: .75rem; }
+svg { width: 100%; height: auto; border-radius: 10px; border: 1px solid rgba(17,17,17,.2); }
 
-@media (min-width: 768px) {
-  .game { max-width: 920px; margin: 0 auto; padding: 1.2rem; }
-  .panel { padding: 1rem; }
-  .hand-grid { grid-template-columns: repeat(8, minmax(0, 1fr)); }
-  h1 { font-size: 1.5rem; }
+@media (min-width: 980px) {
+  .app { padding: 1.2rem; max-width: 1320px; margin: 0 auto; }
+  .workspace { grid-template-columns: 350px 1fr; }
 }
