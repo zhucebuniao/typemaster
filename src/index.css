@@ -1,48 +1,118 @@
 :root {
-  color-scheme: light;
-  font-family: "Inter", "Helvetica Neue", Arial, sans-serif;
-  background: #ffffff;
-  color: #111111;
+  font-family: Inter, system-ui, sans-serif;
+  color: #111827;
+  background: #f3f4f6;
 }
 
-* {
-  box-sizing: border-box;
+* { box-sizing: border-box; }
+body { margin: 0; }
+
+.app-shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 20px;
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: #ffffff;
-  color: #111111;
+.toolbar input {
+  width: 100%;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 12px;
 }
 
-#root {
-  min-height: 100vh;
-}
-
-.minimal-page {
-  min-height: 100vh;
+.layout {
+  margin-top: 16px;
   display: grid;
-  place-items: center;
-  padding: 24px;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
 }
 
-.minimal-card {
-  border: 1px solid #111111;
-  padding: 32px 36px;
-  text-align: center;
-  max-width: 520px;
+.list-panel {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
 }
 
-.minimal-card h1 {
-  margin: 0 0 12px;
-  font-size: clamp(2rem, 8vw, 3.5rem);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.card {
+  text-align: left;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: white;
+  padding: 8px;
 }
 
-.minimal-card p {
-  margin: 0;
-  font-size: 1rem;
-  letter-spacing: 0.04em;
+.card img, .detail-panel img {
+  width: 100%;
+  border-radius: 10px;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+}
+
+.card strong { display: block; margin-top: 8px; }
+.card span { color: #6b7280; font-size: 14px; }
+
+.detail-panel {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.tags em { font-style: normal; background: #f3f4f6; padding: 4px 10px; border-radius: 999px; }
+
+.copy-btn {
+  width: 100%;
+  margin-top: 12px;
+  border: 0;
+  background: #111827;
+  color: white;
+  padding: 12px;
+  border-radius: 12px;
+}
+
+.recent-item {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px;
+  margin-top: 12px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.tabbar {
+  position: sticky;
+  bottom: 0;
+  margin-top: 24px;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  background: #f3f4f6;
+  padding-top: 8px;
+}
+
+.tabbar button {
+  border: 1px solid #d1d5db;
+  padding: 10px;
+  border-radius: 10px;
+  background: white;
+}
+
+.tabbar button[data-active='true'] {
+  background: #111827;
+  color: white;
+}
+
+.placeholder {
+  margin-top: 20px;
+  padding: 30px;
+  background: white;
+  border: 1px dashed #d1d5db;
+  border-radius: 12px;
+}
+
+@media (max-width: 900px) {
+  .layout { grid-template-columns: 1fr; }
 }
