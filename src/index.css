@@ -1,118 +1,25 @@
-:root {
-  font-family: Inter, system-ui, sans-serif;
-  color: #111827;
-  background: #f3f4f6;
-}
-
+:root { font-family: Inter, system-ui, sans-serif; color: #111827; background: #f3f4f6; }
 * { box-sizing: border-box; }
 body { margin: 0; }
-
-.app-shell {
-  max-width: 1180px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-.toolbar input {
-  width: 100%;
-  border: 1px solid #d1d5db;
-  border-radius: 12px;
-  padding: 12px;
-}
-
-.layout {
-  margin-top: 16px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-.list-panel {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-}
-
-.card {
-  text-align: left;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  background: white;
-  padding: 8px;
-}
-
-.card img, .detail-panel img {
-  width: 100%;
-  border-radius: 10px;
-  aspect-ratio: 4/3;
-  object-fit: cover;
-}
-
-.card strong { display: block; margin-top: 8px; }
-.card span { color: #6b7280; font-size: 14px; }
-
-.detail-panel {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 14px;
-}
-
-.tags { display: flex; gap: 8px; flex-wrap: wrap; }
-.tags em { font-style: normal; background: #f3f4f6; padding: 4px 10px; border-radius: 999px; }
-
-.copy-btn {
-  width: 100%;
-  margin-top: 12px;
-  border: 0;
-  background: #111827;
-  color: white;
-  padding: 12px;
-  border-radius: 12px;
-}
-
-.recent-item {
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 12px;
-  padding: 12px;
-  margin-top: 12px;
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-}
-
-.tabbar {
-  position: sticky;
-  bottom: 0;
-  margin-top: 24px;
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  background: #f3f4f6;
-  padding-top: 8px;
-}
-
-.tabbar button {
-  border: 1px solid #d1d5db;
-  padding: 10px;
-  border-radius: 10px;
-  background: white;
-}
-
-.tabbar button[data-active='true'] {
-  background: #111827;
-  color: white;
-}
-
-.placeholder {
-  margin-top: 20px;
-  padding: 30px;
-  background: white;
-  border: 1px dashed #d1d5db;
-  border-radius: 12px;
-}
-
-@media (max-width: 900px) {
-  .layout { grid-template-columns: 1fr; }
-}
+.app-shell { max-width: 1180px; margin: 0 auto; padding: 20px; }
+.header-row{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.toolbar input, .create-form input, .create-form textarea { width: 100%; border: 1px solid #d1d5db; border-radius: 12px; padding: 12px; margin-top:10px }
+.layout { margin-top: 16px; display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.list-panel { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.card-wrap{background:#fff;border:1px solid #e5e7eb;border-radius:12px;padding:8px}
+.card { text-align: left; border: 0; background: white; padding: 0; width:100%; }
+.card img, .detail-panel img { width: 100%; border-radius: 10px; aspect-ratio: 4/3; object-fit: cover; }
+.card strong { display: block; margin-top: 8px; } .card span { color: #6b7280; font-size: 14px; }
+.mini{margin-right:6px;margin-top:8px;border:1px solid #d1d5db;background:#fff;border-radius:8px;padding:4px 8px}
+.detail-panel, .recent-item, .create-form, .simple-list { background: white; border: 1px solid #e5e7eb; border-radius: 12px; padding: 14px; }
+.tags { display: flex; gap: 8px; flex-wrap: wrap; } .tags em { font-style: normal; background: #f3f4f6; padding: 4px 10px; border-radius: 999px; }
+.copy-btn { width: 100%; margin-top: 12px; border: 0; background: #111827; color: white; padding: 12px; border-radius: 12px; }
+.recent-item { margin-top: 12px; display: flex; justify-content: space-between; gap: 12px; }
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.3);display:grid;place-items:center;padding:16px}
+.overlay-card{width:min(700px,100%);background:#fff;padding:16px;border-radius:12px}
+.overlay-head{display:flex;justify-content:space-between;align-items:center}
+.chips,.history{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chips button,.history button,.header-row button,.tabbar button,.recent-item button,.create-form button{border:1px solid #d1d5db;background:#fff;border-radius:10px;padding:8px 10px}
+.tabbar { position: sticky; bottom: 0; margin-top: 24px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; background: #f3f4f6; padding-top: 8px; }
+.tabbar button[data-active='true'] { background: #111827; color: white; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }

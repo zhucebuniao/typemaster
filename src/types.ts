@@ -5,6 +5,9 @@ export type PromptItem = {
   tags: string[]
   note?: string
   imageUrl: string
+  isFavorite: boolean
+  createdAt: string
+  updatedAt: string
   lastCopiedAt?: string
   copyCount: number
 }
