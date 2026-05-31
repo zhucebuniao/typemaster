@@ -8,7 +8,6 @@ const categories = [
       { id: 'gsap', label: 'GSAP', href: '/tutorials/gsap-tutorial.html', icon: '⚡', color: '#68d391', desc: '前端动画库核心概念' },
       { id: 'threejs', label: 'Three.js', href: '/tutorials/threejs-tutorial.html', icon: '🎲', color: '#7c8aff', desc: 'WebGL 3D 场景构建' },
       { id: 'hanzi', label: '汉字笔顺', href: '/tutorials/jingyesi.html', icon: '🖌', color: '#fb923c', desc: '交互式汉字笔画逐笔动画' },
-      { id: 'sort', label: '排序可视化', href: '/tutorials/sort-visualizer.html', icon: '📊', color: '#a78bfa', desc: '五种排序算法交互式可视化' },
     ]
   },
   {
@@ -24,7 +23,6 @@ const featured = [
   { id: 'gsap', title: 'GSAP 动画', desc: 'Tween、缓动、时间线编排、Stagger、ScrollTrigger。', icon: '⚡', color: '#68d391', bg: 'rgba(104,211,145,0.08)', href: '/tutorials/gsap-tutorial.html' },
   { id: 'threejs', title: 'Three.js 3D', desc: '场景三件套、几何体、材质光照、动画循环。', icon: '🎲', color: '#7c8aff', bg: 'rgba(124,138,255,0.08)', href: '/tutorials/threejs-tutorial.html' },
   { id: 'hanzi', title: '汉字笔顺', desc: 'HanziWriter 交互式逐笔动画。', icon: '🖌', color: '#fb923c', bg: 'rgba(251,146,60,0.08)', href: '/tutorials/jingyesi.html' },
-  { id: 'sort', title: '排序可视化', desc: '五种排序算法，交互式柱状图演示。', icon: '📊', color: '#a78bfa', bg: 'rgba(167,139,250,0.08)', href: '/tutorials/sort-visualizer.html' },
 ]
 
 export default function App() {
