@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>笔画 · 笔顺演示</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600&family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+<style>
+:root {
+  --bg: #0b0b0e;
+  --surface: #121216;
+  --border: rgba(255,255,255,0.06);
+  --ink: #e4e4ea;
+  --ink-muted: rgba(255,255,255,0.3);
+  --ink-faint: rgba(255,255,255,0.08);
+  --accent: #fb923c;
+  --accent-glow: rgba(251,146,60,0.08);
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --font-ui: 'Inter', -apple-system, sans-serif;
+  --font-chinese: 'Ma Shan Zheng', serif;
+}
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{
+  font-family:var(--font-ui);
+  background:var(--bg);color:var(--ink);
+  display:flex;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ── Sidebar ── */
+.sidebar{
+  width:300px;min-width:300px;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  padding:24px 20px;gap:0;
+}
+.sidebar-brand{
+  font-family:var(--font-chinese);
+  font-size:22px;letter-spacing:2px;
+  color:var(--ink);
+  margin-bottom:28px;
+  display:flex;align-items:center;gap:8px;
+}
+.sidebar-brand .dot{
+  width:5px;height:5px;border-radius:50%;
+  background:var(--accent);display:block;
+}
+
+.input-group{position:relative;margin-bottom:20px}
+.input-group label{
+  display:block;font-size:10px;font-weight:500;
+  letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:6px;
+}
+.input-group textarea{
+  width:100%;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  padding:10px 12px;
+  font-size:16px;font-family:var(--font-chinese);
+  color:var(--ink);line-height:1.5;
+  resize:none;outline:none;
+  transition:border-color .2s;
+}
+.input-group textarea:focus{
+  border-color:rgba(251,146,60,0.25);
+}
+.input-group textarea::placeholder{
+  color:var(--ink-faint);
+  font-family:var(--font-chinese);
+}
+
+/* Char chips */
+.chips-label{
+  font-size:10px;font-weight:500;
+  letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--ink-muted);margin-bottom:8px;
+}
+.chips{
+  display:flex;flex-wrap:wrap;gap:4px;
+  min-height:32px;margin-bottom:20px;
+}
+.chip{
+  font-family:var(--font-chinese);
+  font-size:15px;padding:2px 10px;
+  border-radius:var(--radius-sm);
+  background:rgba(255,255,255,0.03);
+  color:var(--ink-faint);
+  transition:all .25s;
+  cursor:default;
+}
+.chip.done{color:var(--ink-muted)}
+.chip.active{
+  background:var(--accent-glow);
+  color:var(--accent);
+}
+
+/* Character info */
+.char-meta{
+  margin-bottom:16px;padding-top:12px;
+  border-top:1px solid var(--border);
+}
+.char-meta .pinyin{
+  font-size:13px;color:var(--ink-muted);
+  font-weight:300;letter-spacing:1px;
+}
+.char-meta .strokes{
+  font-size:11px;color:var(--ink-faint);
+  margin-top:2px;
+}
+
+/* Controls */
+.controls{
+  display:flex;gap:6px;
+  margin-top:auto;padding-top:12px;
+}
+.controls button{
+  flex:1;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  border-radius:var(--radius-sm);
+  color:var(--ink-muted);
+  padding:7px 0;
+  font-size:13px;font-family:var(--font-ui);
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:4px;
+}
+.controls button:hover{
+  background:rgba(255,255,255,0.06);
+  color:var(--ink);
+}
+.controls button:active{
+  transform:scale(.96);
+}
+.controls .play{
+  flex:1.5;background:var(--accent-glow);
+  border-color:rgba(251,146,60,0.2);
+  color:var(--accent);
+}
+.controls .play:hover{
+  background:rgba(251,146,60,0.15);
+}
+.controls .play.active{
+  background:rgba(251,146,60,0.18);
+  border-color:rgba(251,146,60,0.3);
+}
+
+/* ── Main ── */
+.main{
+  flex:1;display:flex;
+  align-items:center;justify-content:center;
+  padding:40px;position:relative;
+}
+
+.display{
+  text-align:center;
+}
+.canvas-wrap{
+  width:240px;height:240px;
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 12px;
+  position:relative;
+}
+.canvas-wrap .target svg{width:220px;height:220px}
+.canvas-wrap .glow-ring{
+  position:absolute;inset:-12px;
+  border-radius:50%;
+  border:1px solid var(--border);
+  pointer-events:none;
+  transition:border-color .4s;
+}
+.canvas-wrap .glow-ring.active{
+  border-color:rgba(251,146,60,0.12);
+  box-shadow:0 0 40px rgba(251,146,60,0.04), inset 0 0 40px rgba(251,146,60,0.02);
+}
+.char-label{
+  font-family:var(--font-chinese);
+  font-size:40px;color:rgba(255,255,255,0.04);
+  letter-spacing:4px;margin-top:-8px;
+}
+.progress{
+  font-size:11px;color:var(--ink-faint);
+  margin-top:16px;font-weight:400;
+  letter-spacing:.5px;
+}
+
+/* Empty state */
+.empty{
+  color:var(--ink-faint);
+  font-family:var(--font-chinese);
+  font-size:22px;letter-spacing:2px;
+  text-align:center;
+}
+.empty-sub{
+  font-size:12px;font-family:var(--font-ui);
+  color:var(--ink-faint);
+  margin-top:6px;font-weight:300;
+}
+
+/* Stroke count badge */
+.stroke-badge{
+  display:inline-block;
+  background:rgba(255,255,255,0.03);
+  border:1px solid var(--border);
+  border-radius:4px;
+  padding:1px 6px;
+  font-size:10px;color:var(--ink-muted);
+  font-weight:400;
+}
+
+/* Keyboard hint */
+.kbd-hint{
+  position:absolute;bottom:20px;
+  font-size:10px;color:var(--ink-faint);
+  letter-spacing:.5px;
+  font-weight:300;
+}
+.kbd-hint kbd{
+  display:inline-block;padding:1px 4px;
+  background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);
+  border-radius:3px;
+  font-family:var(--font-ui);
+  font-size:9px;color:var(--ink-muted);
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar">
+  <div class="sidebar-brand"><span class="dot"></span>笔画</div>
+
+  <div class="input-group">
+    <label for="input">输入文字</label>
+    <textarea id="input" rows="2" placeholder="例如：静夜思"></textarea>
+  </div>
+
+  <span class="chips-label">字符</span>
+  <div class="chips" id="chips"></div>
+
+  <div class="char-meta" id="charMeta">
+    <span class="pinyin" id="pinyin">—</span>
+    <span class="strokes" id="strokes"></span>
+  </div>
+
+  <div class="controls">
+    <button id="prevBtn" title">◀</button>
+    <button class="play" id="playBtn">▶</button>
+    <button id="nextBtn">▶</button>
+  </div>
+</div>
+
+<div class="main" id="mainArea">
+  <div class="empty">
+    输入汉字<br>
+    <span class="empty-sub">在左侧输入文字查看笔顺</span>
+  </div>
+</div>
+
+<div class="kbd-hint">
+  <kbd>Space</kbd> 播放 · <kbd>←</kbd><kbd>→</kbd> 切换
+</div>
+
+<script>
+const input = document.getElementById('input');
+const chips = document.getElementById('chips');
+const mainArea = document.getElementById('mainArea');
+const playBtn = document.getElementById('playBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const pinyin = document.getElementById('pinyin');
+const strokes = document.getElementById('strokes');
+const charMeta = document.getElementById('charMeta');
+
+let chars = [];
+let currentIdx = -1;
+let playing = false;
+let writer = null;
+let timeoutId = null;
+let loadingData = {};
+
+// Pinyin + stroke lookup (common ones)
+const DATA = {
+  '静':'jìng','夜':'yè','思':'sī','床':'chuáng','前':'qián',
+  '明':'míng','月':'yuè','光':'guāng','疑':'yí','是':'shì',
+  '地':'dì','上':'shàng','霜':'shuāng','举':'jǔ','头':'tóu',
+  '望':'wàng','低':'dī','故':'gù','乡':'xiāng','永':'yǒng',
+  '爱':'ài','我':'wǒ','为':'wèi','龙':'lóng','家':'jiā',
+  '学':'xué','鱼':'yú','鸟':'niǎo','飞':'fēi','天':'tiān',
+  '大':'dà','中':'zhōng','国':'guó','人':'rén','水':'shuǐ',
+  '火':'huǒ','山':'shān','日':'rì','风':'fēng','花':'huā',
+};
+
+function updateChips() {
+  chips.innerHTML = chars.map((ch, i) =>
+    `<span class="chip${i === currentIdx ? ' active' : ''}${i < currentIdx ? ' done' : ''}">${ch}</span>`
+  ).join('');
+  showMeta(currentIdx >= 0 ? chars[currentIdx] : '');
+}
+
+function showMeta(ch) {
+  if (!ch) {
+    pinyin.textContent = '—';
+    strokes.textContent = '';
+    return;
+  }
+  pinyin.textContent = DATA[ch] || '· · ·';
+  strokes.textContent = '';
+}
+
+function rebuildDisplay(ch) {
+  if (!ch) {
+    mainArea.innerHTML = `<div class="empty">输入汉字<br><span class="empty-sub">在左侧输入文字查看笔顺</span></div>`;
+    return;
+  }
+  mainArea.innerHTML = `
+    <div class="display">
+      <div class="canvas-wrap">
+        <div class="glow-ring"></div>
+        <div class="target" id="mainTarget"></div>
+      </div>
+      <div class="char-label">${ch}</div>
+      <div class="progress"><span id="progressNum">${currentIdx + 1}</span> / ${chars.length}</div>
+    </div>
+  `;
+}
+
+function createWriter() {
+  const el = document.getElementById('mainTarget');
+  if (!el || currentIdx < 0 || currentIdx >= chars.length) return null;
+  const ch = chars[currentIdx];
+  writer = HanziWriter.create(el, ch, {
+    width: 220,
+    height: 220,
+    padding: 10,
+    strokeColor: '#fb923c',
+    showOutline: true,
+    showCharacter: false,
+    delayBetweenStrokes: 400,
+    strokeAnimationSpeed: 0.15,
+  });
+  // Glow on animate
+  const ring = el.closest('.canvas-wrap')?.querySelector('.glow-ring');
+  if (ring) ring.classList.add('active');
+  return writer;
+}
+
+function showChar(idx) {
+  if (idx < 0 || idx >= chars.length) return;
+  currentIdx = idx;
+  updateChips();
+  rebuildDisplay(chars[idx]);
+  createWriter();
+  const num = document.getElementById('progressNum');
+  if (num) num.textContent = idx + 1;
+}
+
+function animateNext() {
+  if (!playing) return;
+  if (currentIdx >= chars.length - 1) {
+    playing = false;
+    playBtn.classList.remove('active');
+    playBtn.innerHTML = '▶';
+    return;
+  }
+  showChar(currentIdx + 1);
+  if (writer) {
+    writer.animateCharacter().then(() => {
+      if (!playing) return;
+      timeoutId = setTimeout(animateNext, 600);
+    });
+  }
+}
+
+// ── Controls ──
+
+playBtn.addEventListener('click', () => {
+  if (chars.length === 0) return;
+  if (playing) {
+    playing = false;
+    playBtn.classList.remove('active');
+    playBtn.innerHTML = '▶';
+    if (timeoutId) clearTimeout(timeoutId);
+    if (writer) writer.pauseAnimation();
+    return;
+  }
+  if (currentIdx >= chars.length - 1) {
+    currentIdx = -1;
+    updateChips();
+  }
+  playing = true;
+  playBtn.classList.add('active');
+  playBtn.innerHTML = '■';
+  animateNext();
+});
+
+prevBtn.addEventListener('click', () => {
+  if (chars.length === 0 || currentIdx <= 0) return;
+  stopPlay();
+  showChar(currentIdx - 1);
+  if (writer) writer.animateCharacter();
+});
+
+nextBtn.addEventListener('click', () => {
+  if (chars.length === 0 || currentIdx >= chars.length - 1) return;
+  stopPlay();
+  showChar(currentIdx + 1);
+  if (writer) writer.animateCharacter();
+});
+
+function stopPlay() {
+  playing = false;
+  playBtn.classList.remove('active');
+  playBtn.innerHTML = '▶';
+  if (timeoutId) { clearTimeout(timeoutId); timeoutId = null; }
+  if (writer) writer.pauseAnimation();
+}
+
+// ── Keyboard ──
+document.addEventListener('keydown', e => {
+  if (e.key === ' ') {
+    e.preventDefault();
+    playBtn.click();
+  } else if (e.key === 'ArrowLeft') {
+    e.preventDefault();
+    prevBtn.click();
+  } else if (e.key === 'ArrowRight') {
+    e.preventDefault();
+    nextBtn.click();
+  }
+});
+
+// ── Input ──
+input.addEventListener('input', () => {
+  stopPlay();
+  const text = input.value.replace(/\s/g, '');
+  chars = [...text];
+  currentIdx = -1;
+  charMeta.style.display = 'block';
+  if (chars.length > 0) {
+    showChar(0);
+    // Show loading state immediately
+    requestAnimationFrame(() => {
+      if (writer) writer.animateCharacter();
+    });
+  } else {
+    updateChips();
+    mainArea.innerHTML = `<div class="empty">输入汉字<br><span class="empty-sub">在左侧输入文字查看笔顺</span></div>`;
+    charMeta.style.display = 'none';
+  }
+});
+
+// Enter key to add
+input.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    if (chars.length > 0) playBtn.click();
+  }
+});
+
+window.addEventListener('load', () => {
+  // Auto-demo: pre-load "永" and auto-play
+  input.value = '永';
+  const text = input.value.replace(/\s/g, '');
+  chars = [...text];
+  currentIdx = -1;
+  charMeta.style.display = 'block';
+  showChar(0);
+  // Longer delay so user sees blank
+  setTimeout(() => {
+    if (writer) {
+      writer.animateCharacter().then(() => {
+        // After first char, auto-advance to play mode
+        setTimeout(() => {
+          playing = true;
+          playBtn.classList.add('active');
+          playBtn.innerHTML = '■';
+          animateNext();
+        }, 2000);
+      });
+    }
+  }, 800);
+});
+</script>
+</body>
+</html>
