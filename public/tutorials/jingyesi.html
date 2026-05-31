@@ -230,6 +230,31 @@ body{
   font-family:var(--font-ui);
   font-size:9px;color:var(--ink-muted);
 }
+
+/* ── Mobile responsive ── */
+@media(max-width:640px){
+  body{flex-direction:column;height:auto;min-height:100vh}
+  .sidebar{
+    width:100%;min-width:0;
+    padding:14px 16px;border-right:none;
+    border-bottom:1px solid var(--border);
+    gap:0;
+  }
+  .sidebar-brand{margin-bottom:12px;font-size:17px}
+  .input-group{margin-bottom:12px}
+  .input-group textarea{font-size:14px;padding:8px 10px}
+  .chips-label,.chips{margin-bottom:10px}
+  .chips{gap:3px}
+  .char-meta{margin-bottom:8px;padding-top:8px}
+  .controls{margin-top:4px;padding-top:8px}
+  .controls button{padding:8px 0;font-size:12px}
+  .main{padding:24px 16px;min-height:50vh}
+  .canvas-wrap{width:220px;height:220px}
+  .canvas-wrap .glow-ring{inset:-12px}
+  .char-label{font-size:24px}
+  .progress{font-size:10px;margin-top:10px}
+  .kbd-hint{display:none}
+}
 </style>
 </head>
 <body>
@@ -251,7 +276,7 @@ body{
   </div>
 
   <div class="controls">
-    <button id="prevBtn" title">◀</button>
+    <button id="prevBtn">◀</button>
     <button class="play" id="playBtn">▶</button>
     <button id="nextBtn">▶</button>
   </div>
