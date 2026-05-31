@@ -23,7 +23,7 @@ const featured = [
   { id: 'gsap', title: 'GSAP 动画', desc: 'Tween、缓动、时间线编排、Stagger、ScrollTrigger。', icon: '⚡', color: '#68d391', bg: 'rgba(104,211,145,0.08)', href: '/tutorials/gsap-tutorial.html' },
   { id: 'threejs', title: 'Three.js 3D', desc: '场景三件套、几何体、材质光照、动画循环。', icon: '🎲', color: '#7c8aff', bg: 'rgba(124,138,255,0.08)', href: '/tutorials/threejs-tutorial.html' },
   { id: 'hanzi', title: '汉字笔顺', desc: 'HanziWriter 交互式逐笔动画。', icon: '🖌', color: '#fb923c', bg: 'rgba(251,146,60,0.08)', href: '/tutorials/jingyesi.html' },
-  ]
+]
 
 export default function App() {
   const [activeId, setActiveId] = useState('pi')
