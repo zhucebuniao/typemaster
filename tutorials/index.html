@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>交互教程 · TypeMaster</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{
+  font-family:'Inter',system-ui,-apple-system,sans-serif;
+  background:#0b0c0f;color:#e4e6ed;line-height:1.6;
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;padding:40px 24px;
+}
+.container{max-width:900px;width:100%}
+h1{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-1px;margin-bottom:8px;text-align:center}
+h1 span{color:#7c8aff}
+.sub{color:#9498a8;font-size:16px;text-align:center;margin-bottom:40px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:32px}
+.card{
+  background:#121418;border:1px solid #2a2c34;border-radius:14px;
+  padding:28px 24px;text-decoration:none;color:inherit;
+  transition:.3s;display:flex;flex-direction:column;position:relative;overflow:hidden;
+}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;transform:scaleX(0);transition:transform .3s}
+.card:hover{transform:translateY(-4px);border-color:#7c8aff}
+.card:hover::before{transform:scaleX(1)}
+.card:nth-child(1)::before{background:#d97757}
+.card:nth-child(2)::before{background:#68d391}
+.card:nth-child(3)::before{background:#7c8aff}
+.card .icon{font-size:36px;margin-bottom:12px}
+.card h2{font-size:18px;font-weight:600;margin-bottom:6px}
+.card p{font-size:13px;color:#9498a8;flex:1;margin-bottom:12px}
+.card .tag{
+  display:inline-block;padding:3px 10px;border-radius:12px;
+  font-size:11px;font-weight:500;align-self:flex-start;
+}
+.card:nth-child(1) .tag{background:rgba(217,119,87,0.12);color:#d97757}
+.card:nth-child(2) .tag{background:rgba(104,211,145,0.12);color:#68d391}
+.card:nth-child(3) .tag{background:rgba(124,138,255,0.12);color:#7c8aff}
+.back-to{text-align:center;margin-top:16px}
+.back-to a{color:#5c6070;font-size:13px;text-decoration:none;transition:.2s}
+.back-to a:hover{color:#9498a8}
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>交互式 <span>教程</span> 合集</h1>
+  <p class="sub">三个面向开发者的渐进式交互教程，每个都是可运行的 HTML 页面</p>
+
+  <div class="grid">
+    <a href="pi-agent-tutorial.html" class="card">
+      <div class="icon">π</div>
+      <h2>π Agent 教程</h2>
+      <p>从 LLM 到 Agent 的跃迁——感知→推理→行动循环。7 个原语工具、树状会话、技能系统、扩展编程。</p>
+      <span class="tag">Agent · CLI</span>
+    </a>
+
+    <a href="gsap-tutorial.html" class="card">
+      <div class="icon">⚡</div>
+      <h2>GSAP 动画教程</h2>
+      <p>GreenSock 动画库的核心概念：Tween、缓动函数、时间线编排、Stagger 错峰、ScrollTrigger 滚动触发。</p>
+      <span class="tag">动画 · 前端</span>
+    </a>
+
+    <a href="threejs-tutorial.html" class="card">
+      <div class="icon">🎲</div>
+      <h2>Three.js 3D 教程</h2>
+      <p>WebGL 的优雅抽象层：场景三件套、几何体、材质与光照、动画循环、OrbitControls 交互。</p>
+      <span class="tag">3D · WebGL</span>
+    </a>
+  </div>
+
+  <div class="back-to"><a href="/">← 返回 TypeMaster</a></div>
+</div>
+</body>
+</html>

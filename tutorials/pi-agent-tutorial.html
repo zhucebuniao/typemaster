@@ -1,0 +1,1307 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>π Agent · 交互教程</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --bg: #0c0c0b;
+  --surface: #161614;
+  --surface-2: #1e1e1c;
+  --surface-3: #282826;
+  --border: #242422;
+  --text: #e8e6df;
+  --text-2: #9e9c94;
+  --text-3: #6a6862;
+  --accent: #d97757;
+  --accent-glow: rgba(217,119,87,0.15);
+  --accent-dim: rgba(217,119,87,0.08);
+  --green: #5fb85f;
+  --blue: #6a9cf5;
+  --purple: #b388e0;
+  --radius: 8px;
+  --radius-lg: 14px;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+/* ─── Nav ─── */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  height: 56px;
+  background: rgba(12,12,11,0.85);
+  backdrop-filter: blur(12px);
+  display: flex; align-items: center;
+  padding: 0 32px;
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner { display: flex; align-items: center; gap: 12px; width: 100%; max-width: 1400px; margin: 0 auto; }
+.nav-logo { font-size: 17px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
+.nav-logo::before {
+  content: 'π'; display: inline-flex;
+  width: 28px; height: 28px; border-radius: 6px;
+  background: var(--accent); color: #0c0c0b;
+  align-items: center; justify-content: center;
+  font-weight: 700; font-size: 15px;
+}
+.nav-links { display: flex; gap: 4px; margin-left: auto; }
+.nav-links a {
+  font-size: 13px; color: var(--text-2); text-decoration: none;
+  padding: 6px 12px; border-radius: 6px; transition: .2s;
+}
+.nav-links a:hover { color: var(--text); background: var(--surface-2); }
+
+/* ─── Hero ─── */
+.hero {
+  min-height: 85vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 120px 24px 80px;
+  position: relative;
+  overflow: hidden;
+}
+.hero-glow {
+  position: absolute;
+  width: 600px; height: 600px;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  top: 20%; left: 50%;
+  transform: translate(-50%, -30%);
+  pointer-events: none;
+}
+.hero h1 {
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 700;
+  letter-spacing: -2px;
+  line-height: 1;
+  margin-bottom: 16px;
+  position: relative;
+}
+.hero h1 .pi-symbol { color: var(--accent); }
+.hero .subtitle {
+  font-size: clamp(18px, 3vw, 24px);
+  color: var(--text-2);
+  max-width: 560px;
+  margin-bottom: 40px;
+  position: relative;
+  font-weight: 300;
+}
+.hero-cta {
+  display: flex; gap: 12px; position: relative;
+}
+.hero-cta a {
+  padding: 12px 28px;
+  border-radius: 10px;
+  font-size: 15px; font-weight: 500;
+  text-decoration: none;
+  transition: .25s;
+}
+.hero-cta .btn-primary {
+  background: var(--accent); color: #0c0c0b;
+}
+.hero-cta .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px var(--accent-glow); }
+.hero-cta .btn-secondary {
+  border: 1px solid var(--border); color: var(--text-2);
+}
+.hero-cta .btn-secondary:hover { background: var(--surface-2); color: var(--text); }
+
+.hero-scroll {
+  position: absolute; bottom: 32px;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  color: var(--text-3); font-size: 12px;
+  animation: bob 2s ease-in-out infinite;
+}
+@keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+/* ─── Section ─── */
+.section {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+.section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+.section-header .label {
+  display: inline-block;
+  font-size: 12px; letter-spacing: 1px;
+  color: var(--accent);
+  background: var(--accent-dim);
+  padding: 4px 12px; border-radius: 20px;
+  margin-bottom: 12px;
+}
+.section-header h2 {
+  font-size: clamp(28px, 4vw, 44px);
+  font-weight: 600;
+  letter-spacing: -1px;
+  margin-bottom: 12px;
+}
+.section-header p {
+  font-size: 16px;
+  color: var(--text-2);
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ─── Architecture Diagram ─── */
+.arch-diagram {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 48px 32px;
+  margin: 32px 0;
+  position: relative;
+  overflow: hidden;
+}
+.arch-flow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  flex-wrap: wrap;
+}
+.arch-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  min-width: 100px;
+  transition: .3s;
+  position: relative;
+}
+.arch-node:hover { border-color: var(--accent); background: var(--accent-dim); transform: translateY(-2px); }
+.arch-node .icon {
+  width: 40px; height: 40px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 18px;
+}
+.arch-node .icon.orange { background: var(--accent-dim); color: var(--accent); }
+.arch-node .icon.blue { background: rgba(106,156,245,0.12); color: var(--blue); }
+.arch-node .icon.green { background: rgba(95,184,95,0.12); color: var(--green); }
+.arch-node .icon.purple { background: rgba(179,136,224,0.12); color: var(--purple); }
+.arch-node .name { font-size: 13px; font-weight: 500; }
+.arch-node .desc { font-size: 11px; color: var(--text-3); }
+
+.arch-arrow {
+  display: flex; align-items: center;
+  padding: 0 4px;
+  color: var(--text-3);
+  font-size: 20px;
+  animation: flowPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.arch-arrow:nth-child(2) { animation-delay: .4s; }
+.arch-arrow:nth-child(4) { animation-delay: .8s; }
+.arch-arrow:nth-child(6) { animation-delay: 1.2s; }
+@keyframes flowPulse { 0%,100% { opacity: .4; } 50% { opacity: 1; color: var(--accent); } }
+
+.arch-loop {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 12px;
+  color: var(--text-3);
+  letter-spacing: .5px;
+}
+.arch-loop-line {
+  width: 80px; height: 1px;
+  background: linear-gradient(90deg, var(--accent) 0%, transparent 100%);
+  position: relative;
+  overflow: hidden;
+}
+.arch-loop-line::after {
+  content: '';
+  position: absolute; top: 0; left: -20px;
+  width: 20px; height: 1px;
+  background: var(--accent);
+  animation: dashMove 2s linear infinite;
+}
+@keyframes dashMove { to { left: 100px; } }
+
+/* ─── LLM vs Agent ─── */
+.compare-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 32px 0;
+}
+.compare-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  text-align: center;
+  transition: .3s;
+}
+.compare-card:hover { border-color: var(--text-3); transform: translateY(-3px); }
+.compare-card h3 { font-size: 16px; margin-bottom: 16px; }
+.compare-card .big-icon {
+  width: 64px; height: 64px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px;
+  margin: 0 auto 16px;
+}
+
+.llm-flow {
+  display: flex; align-items: center; justify-content: center; gap: 0;
+  margin: 20px 0;
+}
+.llm-flow .box {
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 13px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+.llm-flow .arr { color: var(--text-3); padding: 0 8px; }
+
+.agent-flow {
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  margin: 20px 0;
+}
+.agent-row {
+  display: flex; align-items: center; gap: 6px;
+}
+.agent-row .box {
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+}
+.agent-row .box.hl { border-color: var(--accent); background: var(--accent-dim); }
+.agent-row .arr { color: var(--text-3); font-size: 12px; }
+.compare-label {
+  display: inline-block;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 12px;
+  margin-top: 12px;
+}
+.compare-label.llm { background: rgba(106,156,245,0.12); color: var(--blue); }
+.compare-label.agent { background: var(--accent-dim); color: var(--accent); }
+
+/* ─── Tool Cards ─── */
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 32px 0;
+}
+.tool-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: .3s;
+  position: relative;
+  overflow: hidden;
+}
+.tool-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transition: transform .3s ease;
+}
+.tool-card:hover::before { transform: scaleX(1); }
+.tool-card:hover { border-color: var(--accent); transform: translateY(-4px); box-shadow: 0 8px 32px rgba(217,119,87,0.08); }
+.tool-card .t-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; margin: 0 auto 10px;
+}
+.tool-card .t-name { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.tool-card .t-desc { font-size: 11px; color: var(--text-3); }
+.tool-card:nth-child(1) .t-icon { background: rgba(106,156,245,0.12); color: var(--blue); }
+.tool-card:nth-child(2) .t-icon { background: rgba(95,184,95,0.12); color: var(--green); }
+.tool-card:nth-child(3) .t-icon { background: rgba(217,119,87,0.12); color: var(--accent); }
+.tool-card:nth-child(4) .t-icon { background: rgba(179,136,224,0.12); color: var(--purple); }
+.tool-card:nth-child(5) .t-icon { background: rgba(106,156,245,0.12); color: var(--blue); }
+.tool-card:nth-child(6) .t-icon { background: rgba(95,184,95,0.12); color: var(--green); }
+.tool-card:nth-child(7) .t-icon { background: rgba(217,119,87,0.12); color: var(--accent); }
+
+.tool-tag {
+  display: inline-block;
+  font-size: 10px; padding: 2px 8px; border-radius: 10px;
+  background: var(--surface-2); color: var(--text-3);
+  margin-top: 8px;
+}
+
+/* ─── Terminal ─── */
+.terminal-block {
+  background: #050504;
+  border: 1px solid #1a1a18;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: 24px 0;
+}
+.terminal-block .tbar {
+  display: flex; align-items: center; gap: 8px;
+  padding: 10px 16px;
+  background: #0d0d0c;
+  border-bottom: 1px solid #1a1a18;
+  font-size: 12px; color: #6a6862;
+}
+.terminal-block .tbar .dot { width: 8px; height: 8px; border-radius: 50%; }
+.terminal-block .tbar .dot:nth-child(1) { background: #ff5f56; }
+.terminal-block .tbar .dot:nth-child(2) { background: #ffbd2e; }
+.terminal-block .tbar .dot:nth-child(3) { background: #27c93f; }
+.terminal-block .tbar .badge {
+  margin-left: auto;
+  padding: 2px 8px; border-radius: 4px;
+  font-size: 10px; background: var(--accent); color: #0c0c0b; font-weight: 600;
+}
+.terminal-block .tbody {
+  padding: 20px 24px;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  line-height: 1.8;
+  color: #c8c5bc;
+  min-height: 120px;
+}
+.terminal-block .tbody .prompt { color: var(--accent); }
+.terminal-block .tbody .out { color: #8a887f; }
+.terminal-block .tbody .dim { color: #4a4842; font-style: italic; }
+.terminal-block .tbody .ok { color: var(--green); }
+
+.cursor {
+  display: inline-block;
+  width: 7px; height: 15px;
+  background: var(--accent);
+  animation: blink 1s step-end infinite;
+  vertical-align: text-bottom;
+}
+@keyframes blink { 50% { opacity: 0; } }
+
+/* ─── Session Tree ─── */
+.session-tree {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin: 32px 0;
+  position: relative;
+  min-height: 360px;
+}
+.tree-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  position: relative;
+}
+.tree-level {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  position: relative;
+}
+.tree-node {
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 12px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  cursor: pointer;
+  transition: .3s;
+  position: relative;
+  white-space: nowrap;
+}
+.tree-node:hover { border-color: var(--accent); }
+.tree-node.active {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  box-shadow: 0 0 20px var(--accent-glow);
+}
+.tree-node.dim { opacity: .4; }
+.tree-node .dot {
+  display: inline-block; width: 6px; height: 6px;
+  border-radius: 50%; margin-right: 6px;
+}
+.tree-node .dot.accent { background: var(--accent); }
+.tree-node .dot.green { background: var(--green); }
+.tree-node .dot.gray { background: var(--text-3); }
+
+.tree-connector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 40px;
+  color: var(--text-3);
+  font-size: 12px;
+}
+.tree-connector .line {
+  width: 1px;
+  flex: 1;
+  background: var(--border);
+}
+.tree-connector .fork {
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: var(--surface-2);
+  color: var(--text-3);
+  margin: 4px 0;
+}
+.tree-hint {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-3);
+}
+
+/* ─── Skills Flow ─── */
+.skills-vis {
+  display: flex;
+  align-items: stretch;
+  gap: 16px;
+  margin: 32px 0;
+}
+.skills-col {
+  flex: 1;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  position: relative;
+  transition: .3s;
+}
+.skills-col:hover { border-color: var(--text-3); }
+.skills-col .col-title {
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .6px;
+  color: var(--text-3);
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 8px;
+}
+.skills-col .col-title .count {
+  padding: 1px 6px; border-radius: 8px;
+  font-size: 10px; background: var(--surface-2);
+}
+.skills-pile {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.skill-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  border: 1px solid transparent;
+  font-size: 12px;
+  transition: .3s;
+  cursor: pointer;
+}
+.skill-chip:hover { border-color: var(--border); }
+.skill-chip .sc-icon { flex-shrink: 0; font-size: 14px; }
+.skill-chip .sc-name { font-weight: 500; }
+.skill-chip .sc-desc { color: var(--text-3); font-size: 11px; }
+.skill-chip.expanded {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.skills-arrow-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  color: var(--text-3);
+  padding: 0 4px;
+  animation: flowPulse 2s ease-in-out infinite;
+}
+
+.skill-detail-box {
+  display: none;
+  margin-top: 12px;
+  padding: 16px;
+  background: var(--surface-2);
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.7;
+  color: var(--text-2);
+}
+.skill-detail-box.show { display: block; animation: fadeSlideIn .3s ease; }
+@keyframes fadeSlideIn { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ─── Extension Pipeline ─── */
+.pipeline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  margin: 32px 0;
+  flex-wrap: wrap;
+}
+.pipe-stage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 24px;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  min-width: 100px;
+  transition: .3s;
+  position: relative;
+}
+.pipe-stage:hover { border-color: var(--accent); transform: translateY(-2px); }
+.pipe-stage .stage-icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+}
+.pipe-stage .stage-name { font-size: 13px; font-weight: 500; }
+.pipe-stage .stage-desc { font-size: 11px; color: var(--text-3); text-align: center; }
+.pipe-arrow {
+  display: flex; align-items: center;
+  padding: 0 8px;
+  color: var(--text-3);
+  font-size: 18px;
+}
+
+/* ─── Workflow Demo ─── */
+.workflow-demo {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin: 32px 0;
+}
+.workflow-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 20px 0;
+}
+.wf-step {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  transition: .3s;
+  opacity: .4;
+}
+.wf-step.active {
+  opacity: 1;
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+.wf-step .step-box {
+  width: 28px; height: 28px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 600;
+  background: var(--surface-3); flex-shrink: 0;
+}
+.wf-step.active .step-box { background: var(--accent); color: #0c0c0b; }
+.wf-step.done .step-box { background: var(--green); color: #0c0c0b; }
+.wf-step .step-label { font-size: 13px; color: var(--text-2); }
+.wf-step.active .step-label { color: var(--text); }
+.wf-step .step-result { font-size: 12px; color: var(--text-3); margin-left: auto; }
+
+.wf-ctrl {
+  display: flex; gap: 12px; margin-top: 20px; justify-content: center;
+}
+.wf-ctrl button {
+  padding: 8px 20px;
+  border-radius: 8px;
+  border: none;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: .2s;
+}
+.wf-ctrl .wf-play { background: var(--accent); color: #0c0c0b; }
+.wf-ctrl .wf-play:hover { box-shadow: 0 4px 16px var(--accent-glow); }
+.wf-ctrl .wf-reset { background: var(--surface-2); color: var(--text-2); }
+.wf-ctrl .wf-reset:hover { color: var(--text); }
+
+/* ─── Divider ─── */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin: 48px auto;
+  max-width: 200px;
+}
+.section-divider .line {
+  flex: 1; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+}
+
+/* ─── Footer ─── */
+.footer {
+  text-align: center;
+  padding: 60px 24px 40px;
+  color: var(--text-3);
+  font-size: 13px;
+  border-top: 1px solid var(--border);
+  margin-top: 80px;
+}
+
+/* ─── Responsive ─── */
+@media (max-width: 768px) {
+  .nav { padding: 0 16px; }
+  .nav-links a { font-size: 12px; padding: 4px 8px; }
+  .compare-row { grid-template-columns: 1fr; }
+  .arch-flow { gap: 8px; }
+  .arch-node { padding: 14px 16px; min-width: 80px; }
+  .arch-arrow { font-size: 14px; }
+  .skills-vis { flex-direction: column; }
+  .skills-arrow-col { transform: rotate(90deg); }
+  .pipeline { gap: 12px; }
+  .tree-level { gap: 16px; flex-wrap: wrap; }
+  .tools-grid { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); }
+}
+
+/* ─── Scroll reveal ─── */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity .6s ease, transform .6s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-inner">
+    <div class="nav-logo">Agent</div>
+    <div class="nav-links">
+      <a href="#overview">概述</a>
+      <a href="#tools">工具</a>
+      <a href="#sessions">会话</a>
+      <a href="#skills">技能</a>
+      <a href="#extensions">扩展</a>
+      <a href="#workflow">实战</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ─── HERO ─── -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <h1>从 <span class="pi-symbol">π</span> 开始</h1>
+  <p class="subtitle">7 个原语工具，无限可能。<br>一个面向终端的最小化编码代理。</p>
+  <div class="hero-cta">
+    <a href="#overview" class="btn-primary">开始学习</a>
+    <a href="#workflow" class="btn-secondary">直接看实战</a>
+  </div>
+  <div class="hero-scroll">
+    <svg width="12" height="20" viewBox="0 0 12 20" fill="none">
+      <rect x="1" y="1" width="10" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/>
+      <circle cx="6" cy="7" r="2" fill="currentColor">
+        <animate attributeName="cy" values="7;12;7" dur="1.5s" repeatCount="indefinite"/>
+      </circle>
+    </svg>
+    <span>滚动浏览</span>
+  </div>
+</section>
+
+<!-- ─── CHAPTER 1: 概述 ─── -->
+<section class="section" id="overview">
+  <div class="section-header reveal">
+    <span class="label">第一章</span>
+    <h2>什么是 π ？</h2>
+    <p>从 LLM 到 Agent 的跃迁——理解感知→推理→行动的核心循环</p>
+  </div>
+
+  <!-- Architecture diagram -->
+  <div class="arch-diagram reveal">
+    <div class="arch-flow">
+      <div class="arch-node">
+        <div class="icon orange"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <span class="name">你的指令</span>
+        <span class="desc">描述目标</span>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="icon purple"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg></div>
+        <span class="name">π Core</span>
+        <span class="desc">编排循环</span>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="icon blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <span class="name">LLM</span>
+        <span class="desc">推理决策</span>
+      </div>
+      <div class="arch-arrow">→</div>
+      <div class="arch-node">
+        <div class="icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 3 21 3 21 8"/><line x1="4" y1="20" x2="21" y2="3"/><polyline points="21 16 21 21 16 21"/><line x1="15" y1="15" x2="21" y2="21"/><line x1="4" y1="4" x2="9" y2="9"/></svg></div>
+        <span class="name">7 个工具</span>
+        <span class="desc">读写 · 搜索 · 执行</span>
+      </div>
+    </div>
+    <div class="arch-loop">
+      <span>感知</span>
+      <div class="arch-loop-line"></div>
+      <span>推理</span>
+      <div class="arch-loop-line"></div>
+      <span>行动</span>
+      <div class="arch-loop-line"></div>
+      <span>结果回馈</span>
+    </div>
+  </div>
+
+  <!-- LLM vs Agent -->
+  <div class="compare-row reveal">
+    <div class="compare-card">
+      <div class="big-icon" style="background:rgba(106,156,245,0.12);color:var(--blue);">💬</div>
+      <h3>传统 LLM</h3>
+      <div class="llm-flow">
+        <span class="box">提示词</span>
+        <span class="arr">→</span>
+        <span class="box">文本输出</span>
+      </div>
+      <p style="font-size:13px;color:var(--text-3);margin-top:12px;">一次性的问答<br>无副作用、无环境感知</p>
+      <span class="compare-label llm">文本生成器</span>
+    </div>
+    <div class="compare-card">
+      <div class="big-icon" style="background:var(--accent-dim);color:var(--accent);">🤖</div>
+      <h3>π Agent</h3>
+      <div class="agent-flow">
+        <div class="agent-row">
+          <span class="box hl">指令</span>
+          <span class="arr">→</span>
+          <span class="box">推理</span>
+          <span class="arr">→</span>
+          <span class="box hl">工具调用</span>
+        </div>
+        <div class="agent-row" style="color:var(--text-3);font-size:11px;">
+          <span class="arr">↳ 执行结果</span>
+          <span class="arr">→</span>
+          <span>反馈循环</span>
+          <span class="arr">→</span>
+          <span>下一步</span>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--text-3);margin-top:12px;">持续循环、可操作文件系统<br>感知环境、自动决策</p>
+      <span class="compare-label agent">自主代理</span>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><span class="line"></span></div>
+
+<!-- ─── CHAPTER 2: 核心工具 ─── -->
+<section class="section" id="tools">
+  <div class="section-header reveal">
+    <span class="label">第二章</span>
+    <h2>七个原语</h2>
+    <p>π 只有 7 个内置工具——覆盖文件 I/O、搜索、命令执行三类能力</p>
+  </div>
+
+  <div class="tools-grid reveal">
+    <div class="tool-card">
+      <div class="t-icon">📖</div>
+      <div class="t-name">read</div>
+      <div class="t-desc">读取文件内容</div>
+      <span class="tool-tag">I/O</span>
+    </div>
+    <div class="tool-card">
+      <div class="t-icon">✏️</div>
+      <div class="t-name">write</div>
+      <div class="t-desc">写入 / 创建</div>
+      <span class="tool-tag">I/O</span>
+    </div>
+    <div class="tool-card">
+      <div class="t-icon">🔧</div>
+      <div class="t-name">edit</div>
+      <div class="t-desc">精确查找替换</div>
+      <span class="tool-tag">I/O</span>
+    </div>
+    <div class="tool-card">
+      <div class="t-icon">💻</div>
+      <div class="t-name">bash</div>
+      <div class="t-desc">执行 shell</div>
+      <span class="tool-tag">执行</span>
+    </div>
+    <div class="tool-card">
+      <div class="t-icon">🔍</div>
+      <div class="t-name">grep</div>
+      <div class="t-desc">内容搜索</div>
+      <span class="tool-tag">搜索</span>
+    </div>
+    <div class="tool-card">
+      <div class="t-icon">📁</div>
+      <div class="t-name">find</div>
+      <div class="t-desc">查找文件</div>
+      <span class="tool-tag">搜索</span>
+    </div>
+    <div class="tool-card">
+      <div class="t-icon">📂</div>
+      <div class="t-name">ls</div>
+      <div class="t-desc">列出目录</div>
+      <span class="tool-tag">搜索</span>
+    </div>
+  </div>
+
+  <!-- Tool collaboration demo -->
+  <div class="workflow-demo reveal" id="toolWorkflow">
+    <h3 style="font-size:18px;font-weight:600;margin-bottom:4px;">工具协作演示</h3>
+    <p style="font-size:13px;color:var(--text-3);margin-bottom:20px;">点击播放观看 7 个工具如何协同完成重构任务</p>
+    <div class="workflow-steps" id="wfSteps">
+      <div class="wf-step active" data-step="0">
+        <div class="step-box">1</div>
+        <span class="step-label">ls — 浏览项目结构</span>
+        <span class="step-result">→ src/, package.json</span>
+      </div>
+      <div class="wf-step" data-step="1">
+        <div class="step-box">2</div>
+        <span class="step-label">read — 读取源代码</span>
+        <span class="step-result">→ 发现硬编码 API URL</span>
+      </div>
+      <div class="wf-step" data-step="2">
+        <div class="step-box">3</div>
+        <span class="step-label">grep — 搜索所有引用</span>
+        <span class="step-result">→ 3 处匹配</span>
+      </div>
+      <div class="wf-step" data-step="3">
+        <div class="step-box">4</div>
+        <span class="step-label">edit — 精确替换</span>
+        <span class="step-result">→ 替换为环境变量</span>
+      </div>
+      <div class="wf-step" data-step="4">
+        <div class="step-box">5</div>
+        <span class="step-label">bash — 运行测试</span>
+        <span class="step-result">✓ 全部通过</span>
+      </div>
+    </div>
+    <div class="wf-ctrl">
+      <button class="wf-play" onclick="playToolFlow()">▶ 播放</button>
+      <button class="wf-reset" onclick="resetToolFlow()">↺ 重置</button>
+    </div>
+  </div>
+
+  <!-- Terminal -->
+  <div class="terminal-block reveal">
+    <div class="tbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span style="margin-left:6px;">π · 工具调用</span>
+      <span class="badge">LIVE</span>
+    </div>
+    <div class="tbody" id="toolTerminal">
+      <div><span class="dim"># 启动 π 后，直接描述任务...</span></div>
+      <div style="margin-top:6px;"><span class="prompt">π ></span> <span class="out">检查 src 下的路由代码</span></div>
+      <div class="out" style="margin-top:4px;">▸ ls src/</div>
+      <div class="out">&nbsp;&nbsp;找到 routes/ 和 middleware.ts</div>
+      <div class="out">▸ read src/routes/api.ts</div>
+      <div class="out">&nbsp;&nbsp;发现硬编码 'https://api.example.com'</div>
+      <div class="out">▸ grep "api\\.example\\.com" --recursive</div>
+      <div class="out">&nbsp;&nbsp;匹配 3 处引用</div>
+      <div class="out">▸ edit src/routes/api.ts ...</div>
+      <div class="ok">&nbsp;&nbsp;✓ 全部替换完成</div>
+      <div><span class="prompt">π ></span> <span class="cursor"></span></div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><span class="line"></span></div>
+
+<!-- ─── CHAPTER 3: 会话与分支 ─── -->
+<section class="section" id="sessions">
+  <div class="section-header reveal">
+    <span class="label">第三章</span>
+    <h2>树状会话</h2>
+    <p>不是线性聊天记录——你的每一次决策分支都被自动记录</p>
+  </div>
+
+  <div class="session-tree reveal" id="sessionTree">
+    <div class="tree-container">
+      <div style="text-align:center;margin-bottom:16px;">
+        <span style="font-size:12px;color:var(--text-3);">/tree — 查看会话树</span>
+      </div>
+      <!-- Level 0 -->
+      <div class="tree-level">
+        <div class="tree-node active" onclick="selectTreeNode(this)">
+          <span class="dot accent"></span>"优化 API 路由"
+        </div>
+      </div>
+      <div class="tree-connector">
+        <div class="line"></div>
+      </div>
+      <!-- Level 1 -->
+      <div class="tree-level">
+        <div class="tree-node" onclick="selectTreeNode(this)">
+          <span class="dot green"></span>"分析代码中..."<br><span style="font-size:10px;color:var(--text-3);">助手回复</span>
+        </div>
+      </div>
+      <div class="tree-connector">
+        <div class="line"></div>
+        <span class="fork">/fork</span>
+        <div class="line"></div>
+      </div>
+      <!-- Level 2 -->
+      <div class="tree-level" style="gap:60px;">
+        <div class="tree-node active" onclick="selectTreeNode(this)">
+          <span class="dot accent"></span>方案 A：加缓存
+        </div>
+        <div class="tree-node dim" onclick="selectTreeNode(this)">
+          <span class="dot gray"></span>方案 B：优化查询
+        </div>
+      </div>
+      <div class="tree-connector">
+        <div class="line" style="width:1px;"></div>
+        <span class="fork">继续</span>
+        <div class="line" style="width:1px;"></div>
+      </div>
+      <!-- Level 3 -->
+      <div class="tree-level">
+        <div class="tree-node active" onclick="selectTreeNode(this)">
+          <span class="dot accent"></span>"用 Redis 实现"<br><span style="font-size:10px;color:var(--text-3);">← 当前节点</span>
+        </div>
+      </div>
+    </div>
+    <div class="tree-hint">
+      <span>点击节点切换分支 · 自动回溯 · 不丢上下文</span>
+    </div>
+  </div>
+
+  <!-- Session commands -->
+  <div class="compare-row reveal" style="grid-template-columns:repeat(3,1fr);">
+    <div class="compare-card" style="padding:20px;">
+      <h3 style="font-size:14px;">📋 /tree</h3>
+      <p style="font-size:12px;color:var(--text-3);">查看树结构<br>选择节点继续对话</p>
+    </div>
+    <div class="compare-card" style="padding:20px;">
+      <h3 style="font-size:14px;">🔀 /fork</h3>
+      <p style="font-size:12px;color:var(--text-3);">从历史点创建<br>新会话文件</p>
+    </div>
+    <div class="compare-card" style="padding:20px;">
+      <h3 style="font-size:14px;">📦 /compact</h3>
+      <p style="font-size:12px;color:var(--text-3);">压缩早期上下文<br>释放窗口空间</p>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><span class="line"></span></div>
+
+<!-- ─── CHAPTER 4: 技能系统 ─── -->
+<section class="section" id="skills">
+  <div class="section-header reveal">
+    <span class="label">第四章</span>
+    <h2>技能系统</h2>
+    <p>按需加载的能力包——遵循跨 Agent 的开放标准</p>
+  </div>
+
+  <div class="skills-vis reveal">
+    <div class="skills-col">
+      <div class="col-title">🧩 技能目录 <span class="count">N</span></div>
+      <div class="skills-pile">
+        <div class="skill-chip expanded" onclick="toggleSkill(this)">
+          <span class="sc-icon">🐍</span>
+          <div><div class="sc-name">python-dev</div><div class="sc-desc">Python 开发工作流</div></div>
+        </div>
+        <div class="skill-chip" onclick="toggleSkill(this)">
+          <span class="sc-icon">📦</span>
+          <div><div class="sc-name">npm-publish</div><div class="sc-desc">NPM 包发布流水线</div></div>
+        </div>
+        <div class="skill-chip" onclick="toggleSkill(this)">
+          <span class="sc-icon">🐳</span>
+          <div><div class="sc-name">docker-deploy</div><div class="sc-desc">Docker 构建部署</div></div>
+        </div>
+        <div class="skill-chip" onclick="toggleSkill(this)">
+          <span class="sc-icon">🧪</span>
+          <div><div class="sc-name">test-runner</div><div class="sc-desc">测试执行框架</div></div>
+        </div>
+      </div>
+      <div class="skill-detail-box show" id="skillDetail">
+        <strong style="color:var(--accent);">python-dev</strong><br>
+        启动时只加载名称和描述（~30 词）。任务匹配时，<code style="background:var(--surface-3);padding:1px 4px;border-radius:4px;">read SKILL.md</code> 加载完整指令。
+        包含：虚拟环境管理、lint 规则、测试命令、发布流程。
+      </div>
+    </div>
+    <div class="skills-arrow-col">→</div>
+    <div class="skills-col">
+      <div class="col-title">⚡ 加载过程</div>
+      <div class="skills-pile" style="gap:16px;">
+        <div style="text-align:center;padding:12px;background:var(--surface-2);border-radius:8px;">
+          <div style="font-size:11px;color:var(--text-3);margin-bottom:6px;">启动时</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;">
+            <span style="padding:3px 8px;border-radius:4px;background:var(--surface-3);font-size:11px;">name</span>
+            <span style="padding:3px 8px;border-radius:4px;background:var(--surface-3);font-size:11px;">description</span>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:center;gap:8px;">
+          <span style="font-size:20px;color:var(--accent);">↓</span>
+        </div>
+        <div style="text-align:center;padding:12px;border:1px solid var(--accent);border-radius:8px;background:var(--accent-dim);">
+          <div style="font-size:11px;color:var(--accent);margin-bottom:6px;">匹配任务时</div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;justify-content:center;">
+            <span style="padding:3px 8px;border-radius:4px;background:var(--surface-3);font-size:11px;">SKILL.md</span>
+            <span style="padding:3px 8px;border-radius:4px;background:var(--surface-3);font-size:11px;">指令</span>
+            <span style="padding:3px 8px;border-radius:4px;background:var(--surface-3);font-size:11px;">模板</span>
+          </div>
+        </div>
+        <div style="font-size:11px;color:var(--text-3);text-align:center;">
+          也可以手动触发：<code style="background:var(--surface-3);padding:1px 4px;border-radius:4px;color:var(--accent);">/skill:名称</code>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arch-diagram reveal" style="padding:24px;">
+    <div style="display:flex;align-items:center;justify-content:center;gap:16px;flex-wrap:wrap;text-align:center;">
+      <div style="padding:10px 16px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);font-size:12px;">
+        <div style="font-weight:600;">π 技能</div>
+        <div style="color:var(--text-3);font-size:11px;">SKILL.md</div>
+      </div>
+      <span style="color:var(--text-3);font-size:13px;">=</span>
+      <div style="padding:10px 16px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);font-size:12px;">
+        <div style="font-weight:600;">Claude Code</div>
+        <div style="color:var(--text-3);font-size:11px;">CLAUDE.md</div>
+      </div>
+      <span style="color:var(--text-3);font-size:13px;">=</span>
+      <div style="padding:10px 16px;border-radius:8px;background:var(--surface-2);border:1px solid var(--border);font-size:12px;">
+        <div style="font-weight:600;">Codex</div>
+        <div style="color:var(--text-3);font-size:11px;">CODEX.md</div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:12px;font-size:12px;color:var(--text-3);">
+      遵循 <strong style="color:var(--text-2);">Agent Skills 标准</strong> —— 同一份文件跨 Agent 框架复用
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><span class="line"></span></div>
+
+<!-- ─── CHAPTER 5: 扩展 ─── -->
+<section class="section" id="extensions">
+  <div class="section-header reveal">
+    <span class="label">第五章</span>
+    <h2>扩展编程</h2>
+    <p>TypeScript 扩展系统——为 π 添加任意能力</p>
+  </div>
+
+  <div class="pipeline reveal">
+    <div class="pipe-stage">
+      <div class="stage-icon" style="background:var(--accent-dim);color:var(--accent);">📦</div>
+      <span class="stage-name">Extension</span>
+      <span class="stage-desc">注册新工具<br>生命周期钩子</span>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-stage">
+      <div class="stage-icon" style="background:rgba(106,156,245,0.12);color:var(--blue);">🔌</div>
+      <span class="stage-name">MCP 集成</span>
+      <span class="stage-desc">通过扩展<br>连接 MCP 服务器</span>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-stage">
+      <div class="stage-icon" style="background:rgba(95,184,95,0.12);color:var(--green);">🧰</div>
+      <span class="stage-name">Prompt 模板</span>
+      <span class="stage-desc">预设提示词<br>约束行为模式</span>
+    </div>
+    <div class="pipe-arrow">→</div>
+    <div class="pipe-stage">
+      <div class="stage-icon" style="background:rgba(179,136,224,0.12);color:var(--purple);">🚀</div>
+      <span class="stage-name">Runtime</span>
+      <span class="stage-desc">加载执行<br>扩展至 π 核心</span>
+    </div>
+  </div>
+
+  <div class="terminal-block reveal">
+    <div class="tbar">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span style="margin-left:6px;">π · 扩展安装</span>
+    </div>
+    <div class="tbody">
+      <div class="dim"># 通过 npx 安装扩展</div>
+      <div><span class="prompt">$</span> npx pi add mcp-server-filesystem</div>
+      <div class="out">✓ Extension 'mcp-server-filesystem' installed</div>
+      <div style="margin-top:8px;" class="dim"># 也可以手动注册自定义扩展</div>
+      <div><span class="prompt">$</span> tree ~/.pi/extensions/</div>
+      <div class="out">.pi/extensions/</div>
+      <div class="out">├── mcp-server-filesystem/</div>
+      <div class="out">├── my-custom-tool/</div>
+      <div class="out">└── web-search-ext/</div>
+    </div>
+  </div>
+</section>
+
+<div class="section-divider"><span class="line"></span></div>
+
+<!-- ─── CHAPTER 6: 实战 ─── -->
+<section class="section" id="workflow">
+  <div class="section-header reveal">
+    <span class="label">第六章</span>
+    <h2>来真的：实战工作流</h2>
+    <p>一个完整的开发场景——看 π 如何从零开始构建一个功能</p>
+  </div>
+
+  <div class="arch-diagram reveal" style="padding:32px;">
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;align-items:center;gap:12px;padding:12px 16px;border-radius:8px;background:var(--surface-2);">
+        <span style="padding:4px 8px;border-radius:4px;background:var(--accent-dim);color:var(--accent);font-size:11px;font-weight:600;">你</span>
+        <span style="font-size:13px;">"添加用户登录 API，用 JWT 认证"</span>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--text-3);">↓</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+        <span style="padding:6px 14px;border-radius:6px;background:var(--surface-3);font-size:12px;color:var(--blue);">ls → 项目结构</span>
+        <span style="padding:6px 14px;border-radius:6px;background:var(--surface-3);font-size:12px;color:var(--green);">read → 现有路由</span>
+        <span style="padding:6px 14px;border-radius:6px;background:var(--surface-3);font-size:12px;color:var(--accent);">write → 新文件</span>
+        <span style="padding:6px 14px;border-radius:6px;background:var(--surface-3);font-size:12px;color:var(--purple);">bash → 安装依赖</span>
+      </div>
+      <div style="font-size:12px;color:var(--text-3);text-align:center;">每一步自动决策 · 不需要你写脚本</div>
+    </div>
+  </div>
+
+  <div class="compare-row reveal" style="grid-template-columns:1fr;">
+    <div class="compare-card" style="text-align:left;padding:28px;">
+      <h3 style="margin-bottom:12px;">🚀 启动 π</h3>
+      <div class="terminal-block" style="margin:0;">
+        <div class="tbar">
+          <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+          <span style="margin-left:6px;">终端</span>
+        </div>
+        <div class="tbody" style="padding:16px 20px;">
+          <div><span class="prompt">$</span> <span class="out">npm install -g @earendil-works/pi-coding-agent</span></div>
+          <div class="ok">+ @earendil-works/pi-coding-agent</div>
+          <div style="margin-top:8px;"><span class="prompt">$</span> <span class="out">cd ~/my-project && pi</span></div>
+          <div class="dim">π — AI coding agent</div>
+          <div class="dim">Loaded: 0 skills · 0 extensions</div>
+          <div><span class="prompt">π ></span> <span class="cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <p>基于 <span style="color:var(--accent);font-weight:500;">π Agent</span> 官方文档 · 渐进式交互教程</p>
+  <p style="margin-top:4px;">面向计算机本科毕业生的 Agent 编程入门</p>
+</footer>
+
+<script>
+// ─── Scroll reveal ───
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) e.target.classList.add('visible');
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ─── Session tree interaction ───
+function selectTreeNode(el) {
+  document.querySelectorAll('.tree-node').forEach(n => {
+    n.classList.remove('active');
+    n.style.opacity = '';
+  });
+  el.classList.add('active');
+  // Dim other branches
+  el.closest('.tree-level')?.querySelectorAll('.tree-node:not(.active)').forEach(n => {
+    if (n !== el) n.style.opacity = '.3';
+  });
+}
+
+// ─── Skills chips ───
+function toggleSkill(el) {
+  const detail = document.getElementById('skillDetail');
+  const chips = document.querySelectorAll('.skill-chip');
+  chips.forEach(c => c.classList.remove('expanded'));
+  el.classList.add('expanded');
+
+  const names = {
+    'python-dev': '<strong style="color:var(--accent);">python-dev</strong><br>启动时只加载名称和描述（~30 词）。任务匹配时 <code style="background:var(--surface-3);padding:1px 4px;border-radius:4px;">read SKILL.md</code> 加载完整指令。包含：虚拟环境管理、lint 规则、测试命令。',
+    'npm-publish': '<strong style="color:var(--accent);">npm-publish</strong><br>自动发布 NPM 包的工作流。版本号管理、changelog 生成、npm publish、Git tag。支持 canary / stable 两种发布通道。',
+    'docker-deploy': '<strong style="color:var(--accent);">docker-deploy</strong><br>多阶段 Docker 构建。支持 ARM/AMD 交叉编译、镜像标签管理、远程 registry 推送、docker-compose 编排。',
+    'test-runner': '<strong style="color:var(--accent);">test-runner</strong><br>单元测试 + 集成测试运行器。支持 jest/vitest/mocha 自动检测、覆盖率报告、快照测试、并行执行。'
+  };
+
+  const key = el.querySelector('.sc-name')?.textContent;
+  if (key && names[key]) {
+    detail.innerHTML = names[key];
+    detail.classList.add('show');
+  }
+}
+
+// ─── Tool workflow animation ───
+let wfRunning = false;
+let wfTimer = null;
+
+function playToolFlow() {
+  if (wfRunning) return;
+  wfRunning = true;
+
+  const steps = document.querySelectorAll('#wfSteps .wf-step');
+  let i = 0;
+
+  // Reset all
+  steps.forEach(s => { s.classList.remove('active', 'done'); s.style.opacity = ''; });
+  steps[0].classList.add('active');
+
+  wfTimer = setInterval(() => {
+    if (i < steps.length - 1) {
+      steps[i].classList.remove('active');
+      steps[i].classList.add('done');
+      steps[i].style.opacity = '1';
+      i++;
+      steps[i].classList.add('active');
+      steps[i].style.opacity = '1';
+    } else {
+      steps[i].classList.remove('active');
+      steps[i].classList.add('done');
+      steps[i].style.opacity = '1';
+      clearInterval(wfTimer);
+      wfRunning = false;
+    }
+  }, 1200);
+}
+
+function resetToolFlow() {
+  if (wfTimer) clearInterval(wfTimer);
+  wfRunning = false;
+  const steps = document.querySelectorAll('#wfSteps .wf-step');
+  steps.forEach((s, i) => {
+    s.classList.remove('active', 'done');
+    s.style.opacity = i === 0 ? '1' : '';
+  });
+  steps[0].classList.add('active');
+}
+
+// initial tool flow state
+resetToolFlow();
+</script>
+</body>
+</html>
