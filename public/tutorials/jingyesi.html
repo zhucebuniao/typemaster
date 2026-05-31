@@ -230,6 +230,31 @@ body{
   font-family:var(--font-ui);
   font-size:9px;color:var(--ink-muted);
 }
+
+/* ── Mobile responsive ── */
+@media(max-width:640px){
+  body{flex-direction:column}
+  .sidebar{
+    width:100%;min-width:0;
+    padding:16px;border-right:none;
+    border-bottom:1px solid var(--border);
+    gap:2px;
+  }
+  .sidebar-brand{margin-bottom:16px;font-size:18px}
+  .input-group textarea{font-size:14px;padding:8px 10px}
+  .chips{margin-bottom:12px;gap:3px}
+  .chips-label{margin-bottom:4px}
+  .char-meta{margin-bottom:10px;padding-top:8px}
+  .controls{margin-top:8px;padding-top:8px}
+  .controls button{padding:6px 0;font-size:12px}
+  .main{padding:20px}
+  .canvas-wrap{width:180px;height:180px}
+  .canvas-wrap .target svg{width:160px;height:160px}
+  .canvas-wrap .glow-ring{inset:-8px}
+  .char-label{font-size:28px}
+  .progress{font-size:10px}
+  .kbd-hint{display:none}
+}
 </style>
 </head>
 <body>
