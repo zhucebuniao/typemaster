@@ -8,6 +8,11 @@ const categories = [
       { id: 'gsap', label: 'GSAP', href: '/tutorials/gsap-tutorial.html', icon: '⚡', color: '#68d391', desc: '前端动画库核心概念' },
       { id: 'threejs', label: 'Three.js', href: '/tutorials/threejs-tutorial.html', icon: '🎲', color: '#7c8aff', desc: 'WebGL 3D 场景构建' },
       { id: 'hanzi', label: '汉字笔顺', href: '/tutorials/jingyesi.html', icon: '🖌', color: '#fb923c', desc: '交互式汉字笔画逐笔动画' },
+      { id: 'ascii', label: 'ASCII Art', href: '/tutorials/ascii-art.html', icon: '🎨', color: '#fb923c', desc: '图片转字符画，实时预览' },
+      { id: 'gsap-ascii', label: 'GSAP + ASCII', href: '/tutorials/gsap-ascii.html', icon: '✨', color: '#68d391', desc: 'GSAP 驱动字符矩阵动画' },
+      { id: 'ascii-music', label: 'ASCII 音乐可视化', href: '/tutorials/ascii-music.html', icon: '🎵', color: '#6a9cf5', desc: '音频 FFT → ASCII 实时渲染' },
+      { id: 'ascii-video', label: 'ASCII 视频', href: '/tutorials/ascii-video.html', icon: '🎬', color: '#68d391', desc: '视频转复古终端风格' },
+      { id: 'threejs-ascii', label: 'Three.js ASCII', href: '/tutorials/threejs-ascii.html', icon: '🎲', color: '#7c8aff', desc: '3D 场景实时降维成字符画' },
     ]
   },
   {
@@ -23,6 +28,11 @@ const featured = [
   { id: 'gsap', title: 'GSAP 动画', desc: 'Tween、缓动、时间线编排、Stagger、ScrollTrigger。', icon: '⚡', color: '#68d391', bg: 'rgba(104,211,145,0.08)', href: '/tutorials/gsap-tutorial.html' },
   { id: 'threejs', title: 'Three.js 3D', desc: '场景三件套、几何体、材质光照、动画循环。', icon: '🎲', color: '#7c8aff', bg: 'rgba(124,138,255,0.08)', href: '/tutorials/threejs-tutorial.html' },
   { id: 'hanzi', title: '汉字笔顺', desc: 'HanziWriter 交互式逐笔动画。', icon: '🖌', color: '#fb923c', bg: 'rgba(251,146,60,0.08)', href: '/tutorials/jingyesi.html' },
+  { id: 'ascii', title: 'ASCII Art', desc: '图片转字符画，8 种字符集，实时预览。', icon: '🎨', color: '#fb923c', bg: 'rgba(251,146,60,0.08)', href: '/tutorials/ascii-art.html' },
+  { id: 'gsap-ascii', title: 'GSAP + ASCII', desc: 'GSAP 缓动函数驱动字符矩阵动画。', icon: '✨', color: '#68d391', bg: 'rgba(104,211,145,0.08)', href: '/tutorials/gsap-ascii.html' },
+  { id: 'ascii-music', title: 'ASCII 音乐可视化', desc: 'Web Audio API FFT 频谱 → ASCII 实时渲染。', icon: '🎵', color: '#6a9cf5', bg: 'rgba(106,156,245,0.08)', href: '/tutorials/ascii-music.html' },
+  { id: 'ascii-video', title: 'ASCII 视频', desc: '视频转复古终端风格字符画动画。', icon: '🎬', color: '#68d391', bg: 'rgba(104,211,145,0.08)', href: '/tutorials/ascii-video.html' },
+  { id: 'threejs-ascii', title: 'Three.js ASCII', desc: '3D 场景实时降维成字符画。', icon: '🎲', color: '#7c8aff', bg: 'rgba(124,138,255,0.08)', href: '/tutorials/threejs-ascii.html' },
 ]
 
 export default function App() {
