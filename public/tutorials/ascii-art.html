@@ -488,6 +488,10 @@ function render() {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
+  // Cell dimensions for output canvas
+  const cellW = 8;
+  const cellH = 12;
+
   // Calculate dimensions preserving aspect ratio
   // ASCII chars are taller than wide, use actual cell dimensions
   const ratio = img.height / img.width;
@@ -504,8 +508,6 @@ function render() {
 
   const chars = CHARSETS[currentCharset];
   const outCanvas = document.createElement('canvas');
-  const cellW = 8;
-  const cellH = 12;
   outCanvas.width = cols * cellW;
   outCanvas.height = rows * cellH;
   const outCtx = outCanvas.getContext('2d');
