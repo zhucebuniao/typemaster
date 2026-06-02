@@ -96,36 +96,45 @@ body{
 }
 .section-header p{font-size:15px;color:var(--text-2);max-width:600px;margin:0 auto}
 
-/* Demo area */
-.demo-container{
+/* Playground */
+.playground{
+  display:grid;grid-template-columns:320px 1fr;gap:24px;
   background:var(--surface);border:1px solid var(--border);
   border-radius:var(--radius-lg);overflow:hidden;
-  padding:24px;margin-bottom:32px;
+  min-height:500px;
 }
-.demo-terminal{
-  background:var(--bg);border-radius:var(--radius);
-  padding:20px;font-family:var(--font-mono);font-size:12px;
-  line-height:1.4;color:var(--accent);
-  min-height:300px;position:relative;
-  overflow:hidden;
+.playground-sidebar{
+  padding:24px;border-right:1px solid var(--border);
+  display:flex;flex-direction:column;gap:20px;
+  background:var(--surface-2);
 }
-.demo-terminal::before{
-  content:'$ ';
-  color:var(--text-3);
+.playground-sidebar h3{
+  font-size:14px;font-weight:600;color:var(--text);
+  margin-bottom:4px;
 }
-.terminal-line{
-  opacity:0;
-  animation:typeLine 0.5s forwards;
+.control-group{display:flex;flex-direction:column;gap:8px}
+.control-group label{
+  font-size:12px;color:var(--text-2);font-weight:500;
+  display:flex;justify-content:space-between;align-items:center;
 }
-@keyframes typeLine{
-  from{opacity:0;transform:translateX(-10px)}
-  to{opacity:1;transform:translateX(0)}
+.control-group label span{
+  font-family:var(--font-mono);font-size:11px;color:var(--accent);
 }
-
-/* Controls */
-.controls{
-  display:flex;flex-wrap:wrap;gap:12px;justify-content:center;
-  margin-bottom:32px;
+.control-group select,.control-group input[type="range"]{
+  width:100%;background:var(--surface-3);border:1px solid var(--border);
+  border-radius:var(--radius);color:var(--text);font-size:13px;
+  padding:8px 12px;outline:none;transition:.2s;
+}
+.control-group select:focus,.control-group input:focus{
+  border-color:var(--accent);
+}
+input[type="range"]{
+  -webkit-appearance:none;height:6px;border-radius:3px;
+  background:var(--surface-3);border:none;cursor:pointer;
+}
+input[type="range"]::-webkit-slider-thumb{
+  -webkit-appearance:none;width:16px;height:16px;
+  border-radius:50%;background:var(--accent);cursor:pointer;
 }
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:8px;
@@ -133,16 +142,75 @@ body{
   font-size:13px;font-weight:500;cursor:pointer;transition:.2s;
   border:none;font-family:var(--font-sans);
 }
-.btn-primary{background:var(--accent);color:#0c0c0b}
+.btn-primary{
+  background:var(--accent);color:#0c0c0b;
+}
 .btn-primary:hover{filter:brightness(1.1)}
-.btn-outline{background:transparent;color:var(--accent);border:1px solid var(--accent)}
+.btn-primary:disabled{opacity:0.5;cursor:not-allowed}
+.btn-outline{
+  background:transparent;color:var(--accent);
+  border:1px solid var(--accent);
+}
 .btn-outline:hover{background:var(--accent-dim)}
-.btn-orange{background:var(--orange);color:#0c0c0b}
-.btn-orange:hover{filter:brightness(1.1)}
-.btn-green{background:var(--green);color:#0c0c0b}
-.btn-green:hover{filter:brightness(1.1)}
-.btn-purple{background:var(--purple);color:#0c0c0b}
-.btn-purple:hover{filter:brightness(1.1)}
+.upload-zone{
+  border:2px dashed var(--border);border-radius:var(--radius);
+  padding:24px;text-align:center;cursor:pointer;transition:.2s;
+  color:var(--text-3);font-size:13px;
+}
+.upload-zone:hover{border-color:var(--accent);color:var(--text-2)}
+.upload-zone input{display:none}
+.upload-zone .icon{font-size:32px;margin-bottom:8px;display:block}
+
+.playground-main{
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:24px;position:relative;
+}
+.ascii-output{
+  font-family:var(--font-mono);font-size:6px;line-height:1;
+  letter-spacing:0px;white-space:pre;
+  color:var(--text);text-align:center;
+  max-width:100%;overflow:auto;
+  background:var(--bg);border-radius:var(--radius);
+  padding:16px;
+  min-height:300px;display:flex;align-items:center;justify-content:center;
+}
+.ascii-output canvas{max-width:100%;height:auto}
+
+/* Video controls */
+.video-controls{
+  width:100%;margin-top:16px;
+  display:flex;flex-direction:column;gap:8px;
+}
+.progress-bar{
+  width:100%;height:8px;background:var(--surface-3);
+  border-radius:4px;cursor:pointer;position:relative;
+}
+.progress-fill{
+  height:100%;background:var(--accent);border-radius:4px;
+  transition:width 0.1s;
+}
+.control-buttons{
+  display:flex;gap:8px;align-items:center;
+}
+.time-display{
+  font-family:var(--font-mono);font-size:12px;color:var(--text-2);
+  margin-left:auto;
+}
+
+/* Status */
+.status-bar{
+  width:100%;padding:8px 12px;
+  background:var(--surface-3);border-radius:var(--radius);
+  font-size:12px;color:var(--text-2);
+  display:flex;align-items:center;gap:8px;
+}
+.status-bar .dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent);
+}
+.status-bar .dot.processing{animation:pulse 1s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
 
 /* Steps */
 .steps{
@@ -174,7 +242,7 @@ body{
 }
 .code-block .comment{color:var(--text-3)}
 .code-block .keyword{color:var(--accent)}
-.code-block .string{color:var(--orange)}
+.code-block .string{color:var(--green)}
 .code-block .func{color:var(--blue)}
 
 /* Footer */
@@ -185,12 +253,12 @@ body{
 }
 .footer a{color:var(--accent);text-decoration:none}
 
+/* Responsive */
 @media(max-width:768px){
+  .playground{grid-template-columns:1fr}
+  .playground-sidebar{border-right:none;border-bottom:1px solid var(--border)}
   .nav{padding:0 16px}
   .hero{padding:100px 16px 40px}
-  .demo-terminal{font-size:8px}
-  .controls{gap:8px}
-  .btn{padding:8px 14px;font-size:12px}
 }
 </style>
 </head>
@@ -200,9 +268,9 @@ body{
   <div class="nav-inner">
     <a href="/" class="nav-logo">ASCII 视频</a>
     <div class="nav-links">
-      <a href="#demo">演示</a>
+      <a href="#playground">试一试</a>
       <a href="#how">原理</a>
-      <a href="#usage">使用</a>
+      <a href="#cli">命令行</a>
     </div>
   </div>
 </nav>
@@ -210,46 +278,88 @@ body{
 <header class="hero">
   <div class="hero-glow"></div>
   <h1>视频 → <span class="hl">ASCII</span></h1>
-  <p class="subtitle">把任何视频变成 <em>复古终端风格</em> 的字符画动画</p>
+  <p class="subtitle">上传视频，实时转换成 <em>复古终端风格</em> 的字符画动画</p>
 </header>
 
-<section id="demo" class="section">
+<section id="playground" class="section">
   <div class="section-header">
     <span class="label">交互演示</span>
-    <h2>终端模拟器</h2>
-    <p>模拟 ASCII 视频在终端中的效果</p>
+    <h2>实时转换器</h2>
+    <p>上传视频，调整参数，看 ASCII 动画实时播放</p>
   </div>
 
-  <div class="demo-container">
-    <div class="demo-terminal" id="terminal">
-      <div class="terminal-line">Loading ASCII video converter...</div>
-      <div class="terminal-line">Initializing frame processor...</div>
-      <div class="terminal-line">Character set: ░▒▓█</div>
-      <div class="terminal-line">Color palette: green</div>
-      <div class="terminal-line">Resolution: 120x45</div>
-      <div class="terminal-line">FPS: 24</div>
-      <div class="terminal-line">Processing frames...</div>
-      <div class="terminal-line">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</div>
-      <div class="terminal-line">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</div>
-      <div class="terminal-line">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</div>
-      <div class="terminal-line">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</div>
-      <div class="terminal-line">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</div>
-      <div class="terminal-line">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</div>
-      <div class="terminal-line">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</div>
-      <div class="terminal-line">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</div>
-      <div class="terminal-line">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</div>
-      <div class="terminal-line">████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████████</div>
-      <div class="terminal-line">Done! Output: ascii_output.mp4</div>
-      <div class="terminal-line">Total frames: 720</div>
+  <div class="playground">
+    <div class="playground-sidebar">
+      <div class="upload-zone" id="uploadZone">
+        <span class="icon">🎬</span>
+        <div>点击上传或拖拽视频</div>
+        <div style="font-size:11px;color:var(--text-3);margin-top:4px">支持 MP4 / WebM / MOV</div>
+        <input type="file" id="fileInput" accept="video/*">
+      </div>
+
+      <div class="control-group">
+        <label>字符密度 <span id="densityVal">80</span></label>
+        <input type="range" id="density" min="30" max="150" value="80">
+      </div>
+
+      <div class="control-group">
+        <label>字符集</label>
+        <select id="charset">
+          <option value="standard">标准 ░▒▓█</option>
+          <option value="dense">密集 ▁▂▃▄▅▆▇█</option>
+          <option value="blocks">方块 ░▒▓█▀▄▐▌</option>
+          <option value="ascii">经典 @%#*+=-:. </option>
+          <option value="binary">二进制 01</option>
+          <option value="dots">圆点 ·•●</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>颜色模式</label>
+        <select id="colorMode">
+          <option value="green">绿色（终端）</option>
+          <option value="amber">琥珀色</option>
+          <option value="blue">蓝色</option>
+          <option value="original">原始颜色</option>
+          <option value="white">白色</option>
+        </select>
+      </div>
+
+      <div class="control-group">
+        <label>播放速度 <span id="speedVal">1.0x</span></label>
+        <input type="range" id="speed" min="0.25" max="2" step="0.25" value="1">
+      </div>
+
+      <div class="status-bar" id="statusBar">
+        <span class="dot"></span>
+        <span>等待上传视频...</span>
+      </div>
+
+      <div style="display:flex;gap:8px">
+        <button class="btn btn-primary" id="exportBtn" style="flex:1" disabled>导出 GIF</button>
+      </div>
     </div>
-  </div>
 
-  <div class="controls">
-    <button class="btn btn-primary" id="btnPlay">▶ 播放动画</button>
-    <button class="btn btn-outline" id="btnReset">↺ 重置</button>
-    <button class="btn btn-orange" id="btnGreen">绿色</button>
-    <button class="btn btn-blue" id="btnAmber">琥珀色</button>
-    <button class="btn btn-purple" id="btnBlue">蓝色</button>
+    <div class="playground-main">
+      <div class="ascii-output" id="asciiOutput">
+        <div style="text-align:center;color:var(--text-3)">
+          <div style="font-size:48px;margin-bottom:16px">🎬</div>
+          <div>上传一个视频开始转换</div>
+          <div style="font-size:12px;margin-top:8px">或拖拽到左侧区域</div>
+        </div>
+      </div>
+
+      <div class="video-controls" id="videoControls" style="display:none">
+        <div class="progress-bar" id="progressBar">
+          <div class="progress-fill" id="progressFill"></div>
+        </div>
+        <div class="control-buttons">
+          <button class="btn btn-outline" id="playPauseBtn">▶ 播放</button>
+          <button class="btn btn-outline" id="stopBtn">⏹ 停止</button>
+          <span class="time-display" id="timeDisplay">00:00 / 00:00</span>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -257,53 +367,43 @@ body{
   <div class="section-header">
     <span class="label">原理</span>
     <h2>怎么做到的？</h2>
-    <p>Python + FFmpeg + PIL = 视频转 ASCII</p>
+    <p>浏览器里用 Canvas + Video API 实现实时转换</p>
   </div>
 
   <div class="steps">
     <div class="step">
       <div class="step-num">1</div>
-      <h3>读取视频</h3>
-      <p>用 FFmpeg 逐帧解码视频，获取每帧的 RGB 像素数据。</p>
+      <h3>加载视频</h3>
+      <p>用 HTML5 Video 元素加载视频，获取逐帧画面。</p>
     </div>
     <div class="step">
       <div class="step-num">2</div>
-      <h3>缩放采样</h3>
-      <p>把每帧缩放到目标宽度（比如 120 字符），计算每个采样点的亮度。</p>
+      <h3>采样缩放</h3>
+      <p>每帧绘制到小 Canvas，按目标宽度缩放，计算亮度。</p>
     </div>
     <div class="step">
       <div class="step-num">3</div>
       <h3>映射字符</h3>
-      <p>亮度值映射到字符集。暗→稀疏字符，亮→密集字符。</p>
+      <p>亮度值映射到字符集，可选不同调色板上色。</p>
     </div>
     <div class="step">
       <div class="step-num">4</div>
-      <h3>渲染输出</h3>
-      <p>用 PIL 把字符画渲染成图像，再用 FFmpeg 编码成视频。</p>
+      <h3>实时渲染</h3>
+      <p>requestAnimationFrame 循环，逐帧渲染到输出 Canvas。</p>
     </div>
-  </div>
-
-  <div class="code-block">
-    <span class="comment"># 核心转换逻辑</span><br>
-    <span class="keyword">def</span> <span class="func">frame_to_ascii</span>(frame, width=120):<br>
-    &nbsp;&nbsp;<span class="comment"># 缩放</span><br>
-    &nbsp;&nbsp;small = Image.fromarray(frame).resize((width, height))<br>
-    &nbsp;&nbsp;<span class="comment"># 计算亮度</span><br>
-    &nbsp;&nbsp;lum = (0.299*R + 0.587*G + 0.114*B) / 255<br>
-    &nbsp;&nbsp;<span class="comment"># 映射字符</span><br>
-    &nbsp;&nbsp;char = chars[int(lum * len(chars))]<br>
-    &nbsp;&nbsp;<span class="keyword">return</span> ascii_art
   </div>
 </section>
 
-<section id="usage" class="section">
+<section id="cli" class="section">
   <div class="section-header">
-    <span class="label">使用</span>
-    <h2>命令行工具</h2>
-    <p>一行命令，把视频变成 ASCII 风格</p>
+    <span class="label">命令行</span>
+    <h2>Python 版本</h2>
+    <p>更强大的离线转换工具</p>
   </div>
 
   <div class="code-block">
+    <span class="comment"># 安装依赖</span><br>
+    pip install Pillow numpy<br><br>
     <span class="comment"># 基本用法</span><br>
     python ascii-video-converter.py input.mp4<br><br>
     <span class="comment"># 自定义参数</span><br>
@@ -320,71 +420,284 @@ body{
   <p>ASCII 视频教程 · <a href="/">返回 Lab</a></p>
 </footer>
 
-<script>
-const terminal = document.getElementById('terminal');
-const lines = terminal.querySelectorAll('.terminal-line');
-let currentLine = 0;
-let isPlaying = false;
+<!-- Hidden video element -->
+<video id="video" style="display:none" muted></video>
+<canvas id="sampleCanvas" style="display:none"></canvas>
 
-// Hide all lines initially
-lines.forEach(line => {
-  line.style.opacity = '0';
+<script>
+// --- Character sets ---
+const CHARSETS = {
+  standard: ' ░▒▓█',
+  dense: ' ▁▂▃▄▅▆▇█',
+  blocks: ' ░▒▓█▀▄▐▌',
+  ascii: ' .\'`^",:;Il!i><~+_-?][}{1)(|/tfjrxnuvczXYUJCLQ0OZmwqpdbkhao*#MW&8%B@$',
+  binary: '01',
+  dots: ' ·•●',
+};
+
+// --- Color palettes ---
+const PALETTES = {
+  green: (lum) => `hsl(140, 80%, ${Math.round(lum * 60 + 15)}%)`,
+  amber: (lum) => `hsl(35, 90%, ${Math.round(lum * 70 + 15)}%)`,
+  blue: (lum) => `hsl(215, 80%, ${Math.round(lum * 60 + 15)}%)`,
+  white: (lum) => `rgb(${Math.round(lum * 255)},${Math.round(lum * 255)},${Math.round(lum * 255)})`,
+  original: null, // Use original RGB
+};
+
+// --- State ---
+let asciiWidth = 80;
+let currentCharset = 'standard';
+let colorMode = 'green';
+let speed = 1.0;
+let isPlaying = false;
+let animFrame = null;
+let video = null;
+let sampleCanvas = null;
+let sampleCtx = null;
+let outCanvas = null;
+let outCtx = null;
+
+// --- Elements ---
+const $ = id => document.getElementById(id);
+const uploadZone = $('uploadZone');
+const fileInput = $('fileInput');
+const densitySlider = $('density');
+const densityVal = $('densityVal');
+const charsetSelect = $('charset');
+const colorModeSelect = $('colorMode');
+const speedSlider = $('speed');
+const speedVal = $('speedVal');
+const output = $('asciiOutput');
+const statusBar = $('statusBar');
+const videoControls = $('videoControls');
+const playPauseBtn = $('playPauseBtn');
+const stopBtn = $('stopBtn');
+const progressBar = $('progressBar');
+const progressFill = $('progressFill');
+const timeDisplay = $('timeDisplay');
+const exportBtn = $('exportBtn');
+
+// --- Init ---
+video = $('video');
+sampleCanvas = $('sampleCanvas');
+sampleCtx = sampleCanvas.getContext('2d', { willReadFrequently: true });
+
+// --- Upload ---
+uploadZone.addEventListener('click', () => fileInput.click());
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.style.borderColor = 'var(--accent)'; });
+uploadZone.addEventListener('dragleave', () => { uploadZone.style.borderColor = ''; });
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadZone.style.borderColor = '';
+  if (e.dataTransfer.files[0]) loadVideo(e.dataTransfer.files[0]);
+});
+fileInput.addEventListener('change', e => {
+  if (e.target.files[0]) loadVideo(e.target.files[0]);
 });
 
-function playAnimation() {
-  if (isPlaying) return;
-  isPlaying = true;
-  currentLine = 0;
+function loadVideo(file) {
+  const url = URL.createObjectURL(file);
+  video.src = url;
+  video.load();
   
-  // Show lines one by one
-  function showNextLine() {
-    if (currentLine >= lines.length) {
-      isPlaying = false;
-      return;
-    }
+  updateStatus('加载视频中...', true);
+  
+  video.onloadedmetadata = () => {
+    // Setup sample canvas
+    const ratio = video.videoHeight / video.videoWidth;
+    const cols = asciiWidth;
+    const charAspect = 1.5; // approx
+    const rows = Math.floor(cols * ratio / charAspect);
     
-    const line = lines[currentLine];
-    line.style.animation = 'none';
-    line.offsetHeight; // Trigger reflow
-    line.style.animation = 'typeLine 0.5s forwards';
-    line.style.animationDelay = `${currentLine * 0.3}s`;
+    sampleCanvas.width = cols;
+    sampleCanvas.height = rows;
     
-    currentLine++;
+    // Setup output canvas
+    const cellW = 8;
+    const cellH = 12;
+    outCanvas = document.createElement('canvas');
+    outCanvas.width = cols * cellW;
+    outCanvas.height = rows * cellH;
+    outCtx = outCanvas.getContext('2d');
     
-    if (currentLine < lines.length) {
-      setTimeout(showNextLine, 300);
+    output.innerHTML = '';
+    output.appendChild(outCanvas);
+    outCanvas.style.maxWidth = '100%';
+    outCanvas.style.height = 'auto';
+    outCanvas.style.borderRadius = 'var(--radius)';
+    
+    videoControls.style.display = 'flex';
+    exportBtn.disabled = false;
+    
+    updateTimeDisplay();
+    updateStatus('就绪 — 点击播放', false);
+    
+    // Render first frame
+    renderFrame();
+  };
+  
+  video.ontimeupdate = () => {
+    updateTimeDisplay();
+    const pct = (video.currentTime / video.duration) * 100;
+    progressFill.style.width = pct + '%';
+  };
+  
+  video.onended = () => {
+    isPlaying = false;
+    playPauseBtn.textContent = '▶ 播放';
+    updateStatus('播放完成', false);
+  };
+}
+
+// --- Controls ---
+densitySlider.addEventListener('input', e => {
+  asciiWidth = +e.target.value;
+  densityVal.textContent = asciiWidth;
+  if (video.videoWidth) {
+    // Recalculate dimensions
+    const ratio = video.videoHeight / video.videoWidth;
+    const cols = asciiWidth;
+    const rows = Math.floor(cols * ratio / 1.5);
+    sampleCanvas.width = cols;
+    sampleCanvas.height = rows;
+    const cellW = 8;
+    const cellH = 12;
+    outCanvas.width = cols * cellW;
+    outCanvas.height = rows * cellH;
+    outCtx = outCanvas.getContext('2d');
+    renderFrame();
+  }
+});
+
+charsetSelect.addEventListener('change', e => {
+  currentCharset = e.target.value;
+  renderFrame();
+});
+
+colorModeSelect.addEventListener('change', e => {
+  colorMode = e.target.value;
+  renderFrame();
+});
+
+speedSlider.addEventListener('input', e => {
+  speed = +e.target.value;
+  speedVal.textContent = speed.toFixed(2) + 'x';
+  video.playbackRate = speed;
+});
+
+// --- Playback ---
+playPauseBtn.addEventListener('click', () => {
+  if (!video.src) return;
+  
+  if (isPlaying) {
+    video.pause();
+    isPlaying = false;
+    playPauseBtn.textContent = '▶ 播放';
+    updateStatus('暂停', false);
+  } else {
+    video.play();
+    isPlaying = true;
+    playPauseBtn.textContent = '⏸ 暂停';
+    updateStatus('播放中...', true);
+    animate();
+  }
+});
+
+stopBtn.addEventListener('click', () => {
+  video.pause();
+  video.currentTime = 0;
+  isPlaying = false;
+  playPauseBtn.textContent = '▶ 播放';
+  renderFrame();
+  updateStatus('已停止', false);
+});
+
+progressBar.addEventListener('click', e => {
+  if (!video.duration) return;
+  const rect = progressBar.getBoundingClientRect();
+  const pct = (e.clientX - rect.left) / rect.width;
+  video.currentTime = pct * video.duration;
+  renderFrame();
+});
+
+// --- Animation loop ---
+function animate() {
+  if (!isPlaying) return;
+  renderFrame();
+  animFrame = requestAnimationFrame(animate);
+}
+
+// --- Core render ---
+function renderFrame() {
+  if (!video.videoWidth) return;
+  
+  const w = sampleCanvas.width;
+  const h = sampleCanvas.height;
+  
+  // Draw video frame to sample canvas
+  sampleCtx.drawImage(video, 0, 0, w, h);
+  const imageData = sampleCtx.getImageData(0, 0, w, h);
+  const pixels = imageData.data;
+  
+  const chars = CHARSETS[currentCharset];
+  const cellW = 8;
+  const cellH = 12;
+  
+  // Clear canvas
+  outCtx.fillStyle = '#0c0c0b';
+  outCtx.fillRect(0, 0, outCanvas.width, outCanvas.height);
+  outCtx.font = `${cellH - 1}px 'JetBrains Mono', monospace`;
+  outCtx.textBaseline = 'top';
+  
+  const getColor = PALETTES[colorMode];
+  
+  for (let y = 0; y < h; y++) {
+    for (let x = 0; x < w; x++) {
+      const i = (y * w + x) * 4;
+      const r = pixels[i];
+      const g = pixels[i + 1];
+      const b = pixels[i + 2];
+      
+      const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+      const charIdx = Math.min(Math.floor(lum * (chars.length - 1)), chars.length - 1);
+      const ch = chars[charIdx];
+      
+      if (ch !== ' ') {
+        let fillStyle;
+        if (colorMode === 'original') {
+          fillStyle = `rgb(${r},${g},${b})`;
+        } else {
+          fillStyle = getColor(lum);
+        }
+        outCtx.fillStyle = fillStyle;
+        outCtx.fillText(ch, x * cellW, y * cellH);
+      }
     }
   }
-  
-  showNextLine();
 }
 
-function resetAnimation() {
-  isPlaying = false;
-  currentLine = 0;
-  lines.forEach(line => {
-    line.style.opacity = '0';
-    line.style.animation = 'none';
-  });
+// --- Helpers ---
+function updateTimeDisplay() {
+  const fmt = t => {
+    const m = Math.floor(t / 60);
+    const s = Math.floor(t % 60);
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+  };
+  timeDisplay.textContent = `${fmt(video.currentTime)} / ${fmt(video.duration || 0)}`;
 }
 
-// Button handlers
-document.getElementById('btnPlay').addEventListener('click', playAnimation);
-document.getElementById('btnReset').addEventListener('click', resetAnimation);
+function updateStatus(text, processing) {
+  statusBar.innerHTML = `<span class="dot ${processing ? 'processing' : ''}"></span><span>${text}</span>`;
+}
 
-// Color buttons
-document.getElementById('btnGreen').addEventListener('click', () => {
-  terminal.style.color = '#68d391';
+// --- Export (simplified - just captures current frame) ---
+exportBtn.addEventListener('click', () => {
+  if (!outCanvas) return;
+  const a = document.createElement('a');
+  a.download = 'ascii-frame.png';
+  a.href = outCanvas.toDataURL('image/png');
+  a.click();
 });
-document.getElementById('btnAmber').addEventListener('click', () => {
-  terminal.style.color = '#fb923c';
-});
-document.getElementById('btnBlue').addEventListener('click', () => {
-  terminal.style.color = '#6a9cf5';
-});
-
-// Auto play on load
-setTimeout(playAnimation, 500);
 </script>
 </body>
 </html>
