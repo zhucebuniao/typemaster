@@ -489,10 +489,11 @@ function render() {
   const ctx = canvas.getContext('2d');
 
   // Calculate dimensions preserving aspect ratio
-  // ASCII chars are ~2x taller than wide, so divide height by ~2
+  // ASCII chars are taller than wide, use actual cell dimensions
   const ratio = img.height / img.width;
   const cols = asciiWidth;
-  const rows = Math.floor(cols * ratio * 0.45);
+  const charAspect = cellH / cellW;  // 字符高宽比 (12/8 = 1.5)
+  const rows = Math.floor(cols * ratio / charAspect);
 
   canvas.width = cols;
   canvas.height = rows;
